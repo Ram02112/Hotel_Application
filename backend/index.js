@@ -4,9 +4,18 @@ require("dotenv").config();
 const bodyParser = require("body-parser");
 
 const cors = require("cors");
-
-mongoose.connect("mongodb://localhost:27017/burger-restaurant");
-
+mongoURI = "mongodb://localhost:27017/burger-restaurant";
+mongoose
+  .connect(mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("MongoDB connected");
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+  });
 const app = express();
 
 app.use(bodyParser.json());
@@ -31,4 +40,6 @@ app.use("/admin", require("./routes/adminRoutes"));
 app.use("/cart", require("./routes/cartRoutes"));
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

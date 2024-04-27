@@ -9,6 +9,11 @@ const ProductSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  calories: {
+    type: Number,
+    default: 0,
+    required: true,
+  },
   _category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Category",

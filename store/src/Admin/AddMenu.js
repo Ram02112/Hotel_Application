@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const AddMenuItemForm = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [calories, setCalories] = useState("");
   const [price, setPrice] = useState("");
   const [imageURL, setImageURL] = useState("");
 
@@ -19,13 +20,15 @@ const AddMenuItemForm = () => {
         body: JSON.stringify({
           name,
           description,
+          calories,
           price,
-          image: imageURL, 
+          image: imageURL,
         }),
       });
       if (response.ok) {
         setName("");
         setDescription("");
+        setCalories("");
         setPrice("");
         setImageURL("");
         console.log("Menu item added successfully!");
@@ -55,7 +58,7 @@ const AddMenuItemForm = () => {
         </div>
         <div className="mb-3">
           <label htmlFor="description" className="form-label">
-            Description
+            Ingredients
           </label>
           <input
             type="text"
@@ -63,6 +66,18 @@ const AddMenuItemForm = () => {
             id="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="description" className="form-label">
+            Calories
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="description"
+            value={calories}
+            onChange={(e) => setCalories(e.target.value)}
           />
         </div>
         <div className="mb-3">

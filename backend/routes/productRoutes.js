@@ -64,6 +64,7 @@ router.get("/", async (req, res) => {
       _id: product._id,
       name: product.name,
       description: product.description,
+      calories: product.calories,
       price: product.price,
       image: product.image,
       outOfStock: product.outOfStock,
@@ -77,12 +78,13 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/create", async (req, res) => {
-  const { _id, name, price, description, image } = req.body;
+  const { _id, name, price, description, calories, image } = req.body;
   try {
     const product = new Product({
       _id,
       name,
       description,
+      calories,
       price,
       outOfStock: false,
       image,
