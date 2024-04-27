@@ -50,11 +50,22 @@ const Hero = () => {
                 anything
               </h2>
               <p>
-                Pleased anxious or as in by viewing forbade minutes prevent. Too
-                leave had those get being led weeks blind. Had men rose from
-                down lady able. Its son him ferrars proceed six parlors.
+                Nestled in the heart of downtown, our burger restaurant beckons
+                with the tantalizing aroma of sizzling patties and freshly baked
+                buns. Step through our doors and be greeted by the warm ambiance
+                of rustic décor and friendly chatter. Our menu boasts a
+                delectable array of handcrafted burgers, each a masterpiece of
+                flavor and texture. Sink your teeth into our signature "Juicy
+                Lucy," oozing with melted cheese, or savor the smoky allure of
+                our barbecue bacon burger. Vegetarian? No problem! Our veggie
+                burger, packed with wholesome ingredients and bursting with
+                flavor, is sure to delight even the most discerning palate. Pair
+                your burger with a side of crispy golden fries or opt for our
+                zesty coleslaw for a refreshing crunch. Whether you're grabbing
+                a quick bite on your lunch break or settling in for a leisurely
+                dinner, our burger joint promises a satisfying experience that
+                will keep you coming back for more.
               </p>
-
               <div className="address">
                 <ul className="list-unstyled">
                   <li>
