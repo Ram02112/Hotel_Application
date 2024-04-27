@@ -1,0 +1,32 @@
+.contact-heading {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.contact-description {
+  text-align: center;
+}
+
+.address-items {
+  margin-top: 40px;
+}
+
+.address-item {
+  display: flex;
+  align-items: center;
+}
+
+.address-icon {
+  font-size: 24px;
+  margin-right: 10px;
+  color: #ff4500; /* Red color */
+}
+
+.address-details {
+  flex: 1;
+}
+
+.font-weight-bold {
+  font-weight: bold;
+}
