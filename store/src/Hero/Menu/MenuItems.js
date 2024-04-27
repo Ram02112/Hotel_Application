@@ -4,6 +4,7 @@ import cartIcon from "../../assets/img/cart.svg";
 import { useDispatch } from "react-redux";
 import { message } from "antd";
 import useCart from "../../_actions/cartActions";
+
 const MenuItems = ({ menuItems }) => {
   const { addToCart } = useCart();
   const dispatch = useDispatch();

@@ -15,6 +15,7 @@ import AdminSignupForm from "./Admin/AdminSignup";
 import Admin from "./Admin/Admin";
 import ItemMenu from "./Hero/Menu/Menu";
 import AdminMenu from "./Admin/AdminMenu";
+import Cart from "./Hero/Cart";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import webLogo from "./assets/img/hotel_logo.jpeg";
@@ -110,7 +111,7 @@ function App() {
                 </li>
                 <li className="nav-item">
                   <Link to="cart" className="nav-link">
-                    Cart({itemCount})
+                    Cart <span className="text-danger">[{itemCount}]</span>
                   </Link>
                 </li>
                 <li className="nav-item">
@@ -316,9 +317,38 @@ function App() {
                   </Auth>
                 }
               />
-              <Route path="/admin-dashboard" element={<Admin />} />
-              <Route path="/menu" element={<ItemMenu />} />
-              <Route path="/update-menu" element={<AdminMenu />} />
+              <Route
+                path="/admin-dashboard"
+                element={
+                  <Auth authRoute={true} redirectTo="/admin/login">
+                    <Admin />
+                  </Auth>
+                }
+              />
+              <Route
+                path="/menu"
+                element={
+                  <Auth authRoute={true} redirectTo="/login">
+                    <ItemMenu />
+                  </Auth>
+                }
+              />
+              <Route
+                path="/update-menu"
+                element={
+                  <Auth authRoute={true} redirectTo={"/admin/login"}>
+                    <AdminMenu />
+                  </Auth>
+                }
+              />
+              <Route
+                path="/cart"
+                element={
+                  <Auth authRoute={true} redirectTo="/login">
+                    <Cart />
+                  </Auth>
+                }
+              />
             </Routes>
           </div>
         </div>
