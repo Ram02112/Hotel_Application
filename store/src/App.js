@@ -18,13 +18,16 @@ import AdminMenu from "./Admin/AdminMenu";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import webLogo from "./assets/img/hotel_logo.jpeg";
+import { sumBy } from "lodash";
 
 function App() {
   let auth = useSelector((state) => state.customer?.auth);
   let adminAuth = useSelector((state) => state.admin?.adminAuth);
+  const cartItems = useSelector((state) => state.cart.cartItems?.cartDetails);
   const { customerLogout } = useCustomers();
   const { adminLogout } = useAdmin();
   const dispatch = useDispatch();
+  const itemCount = sumBy(cartItems, (item) => item?.quantity);
 
   const handleLogout = () => {
     dispatch(customerLogout()).then((res) => {
@@ -74,7 +77,7 @@ function App() {
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav ms-auto">
                 <li className="nav-item dropdown">
-                  <a
+                  <Link
                     className="nav-link dropdown-toggle"
                     href="#"
                     id="navbarDropdown"
@@ -83,7 +86,7 @@ function App() {
                     aria-expanded="false"
                   >
                     Hi {fullName}
-                  </a>
+                  </Link>
                   <ul
                     className="dropdown-menu"
                     aria-labelledby="navbarDropdown"
@@ -107,7 +110,7 @@ function App() {
                 </li>
                 <li className="nav-item">
                   <Link to="cart" className="nav-link">
-                    Cart
+                    Cart({itemCount})
                   </Link>
                 </li>
                 <li className="nav-item">
@@ -152,7 +155,7 @@ function App() {
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav ms-auto">
                 <li className="nav-item dropdown">
-                  <a
+                  <Link
                     className="nav-link dropdown-toggle"
                     href="#"
                     id="navbarDropdown"
@@ -161,7 +164,7 @@ function App() {
                     aria-expanded="false"
                   >
                     Hi {adminName}
-                  </a>
+                  </Link>
                   <ul
                     className="dropdown-menu"
                     aria-labelledby="navbarDropdown"

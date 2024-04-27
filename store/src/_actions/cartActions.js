@@ -5,14 +5,12 @@ import { ADD_TO_CART, GET_CART_ITEM } from "./types";
 export default function useCart() {
   const token = localStorage.getItem("customerToken");
   const config = {
-    header: {
-      Authorization: `Bearer ${token}`,
-    },
+    headers: { Authorization: `Bearer ${token}` },
   };
   const dispatch = useDispatch();
   const addToCart = (data) => {
     const result = axios
-      .post("/cart/addToCart", data, config)
+      .post("http://localhost:4000/cart/addToCart", data, config)
       .then((res) => {
         return res.data;
       })
@@ -26,7 +24,7 @@ export default function useCart() {
   };
   const getCartItems = () => {
     const result = axios
-      .get("/cart", config)
+      .get("http://localhost:4000/cart", config)
       .then((res) => {
         return res.data;
       })

@@ -1,19 +1,16 @@
 const router = require("express").Router();
-
 const { Cart } = require("../models/Cart");
-
-const { Product } = require("../models/Product");
-
+const Product = require("../models/Product");
 const { auth } = require("../middlewares/auth");
 
 const populate = {
   path: "cartDetails",
   populate: {
     path: "_product",
-    model: "products",
+    model: "Product",
     populate: {
       path: "_category",
-      model: "categories",
+      model: "Category",
     },
   },
 };
@@ -21,7 +18,7 @@ const populate = {
 router.post("/addToCart", auth, async (req, res) => {
   try {
     const customerCart = await Cart.findOne({ _customerId: req.customerId });
-    const product = await Product.findOne({ _id: req.body._productId });
+    const product = await Product.findById(req.body._productId);
 
     const cartDetails = {
       _product: req.body._productId,
@@ -31,6 +28,7 @@ router.post("/addToCart", auth, async (req, res) => {
     };
 
     if (customerCart) {
+      // Update existing cart
       const updatedCart = await Cart.findOneAndUpdate(
         {
           _customerId: req.customerId,
@@ -42,56 +40,86 @@ router.post("/addToCart", auth, async (req, res) => {
             "cartDetails.$.amount": product.price * req.body.quantity,
           },
         },
-        { new: true }
-      );
+        {
+          new: true,
+        }
+      ).populate(populate);
 
       if (updatedCart) {
-        await updatedCart.populate(populate).execPopulate();
         return res
           .status(200)
-          .json({ success: true, message: "Added to cart", data: updatedCart });
+          .json({
+            status: true,
+            message: "added successfully",
+            data: updatedCart,
+          });
       } else {
-        const newCart = await Cart.findOneAndUpdate(
-          { _customerId: req.customerId },
-          { $push: { cartDetails: cartDetails } },
-          { new: true }
-        );
-        await newCart.populate(populate).execPopulate();
+        // Add new cart item
+        const updatedCart = await Cart.findByIdAndUpdate(
+          customerCart._id,
+          {
+            $push: {
+              cartDetails: cartDetails,
+            },
+          },
+          {
+            new: true,
+          }
+        ).populate(populate);
+
         return res
           .status(200)
-          .json({ success: true, message: "Added to cart", data: newCart });
+          .json({
+            status: true,
+            message: "added successfully",
+            data: updatedCart,
+          });
       }
     } else {
+      // Create new cart
       const newCart = new Cart({
         _customerId: req.customerId,
         cartDetails: [cartDetails],
       });
-      await newCart.save();
-      await newCart.populate(populate).execPopulate();
+
+      const savedCart = await newCart.save();
+      const populatedCart = await savedCart.populate(populate).execPopulate();
       return res
         .status(200)
-        .json({ success: true, message: "Added to cart", data: newCart });
+        .json({
+          status: true,
+          message: "added successfully",
+          data: populatedCart,
+        });
     }
-  } catch (error) {
-    console.error("Error adding product to cart:", error);
+  } catch (err) {
     return res
       .status(500)
-      .json({ success: false, error: "Internal server error" });
+      .json({
+        status: false,
+        message: "Internal server error",
+        error: err.message,
+      });
   }
 });
 
-router.get("/", auth, (req, res) => {
-  Cart.findOne({
-    _customerId: req.customerId,
-  })
-    .populate(populate)
-    .exec()
-    .then((data, err) => {
-      if (err) return res.json({ status: false, err });
-      return res
-        .status(500)
-        .json({ success: false, error: "Internal server error" });
-    });
+router.get("/", auth, async (req, res) => {
+  try {
+    const cart = await Cart.findOne({ _customerId: req.customerId }).populate(
+      populate
+    );
+    return res
+      .status(200)
+      .json({ status: true, message: "Get Cart successful", data: cart });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({
+        status: false,
+        message: "Internal server error",
+        error: err.message,
+      });
+  }
 });
 
 module.exports = router;

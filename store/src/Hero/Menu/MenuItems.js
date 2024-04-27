@@ -1,7 +1,25 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import cartIcon from "../../assets/img/cart.svg";
+import { useDispatch } from "react-redux";
+import { message } from "antd";
+import useCart from "../../_actions/cartActions";
 const MenuItems = ({ menuItems }) => {
+  const { addToCart } = useCart();
+  const dispatch = useDispatch();
+  const handleAddToCart = (menuItems) => {
+    const data = {
+      _productId: menuItems._id,
+      quantity: 1,
+    };
+    dispatch(addToCart(data)).then((res) => {
+      if (res.payload.status) {
+        message.success(res.payload.message);
+      } else {
+        message.error(res.payload.message);
+      }
+    });
+  };
   return (
     <div className="container">
       <h2 className="text-center mb-4">Menu</h2>
@@ -25,7 +43,10 @@ const MenuItems = ({ menuItems }) => {
                 <p className="card-text fs-9 ">
                   <b>Calories</b> - {menuItem.calories} Kcal
                 </p>
-                <button className="btn btn-primary d-flex justify-content-between align-items-center">
+                <button
+                  className="btn btn-primary d-flex justify-content-between align-items-center"
+                  onClick={() => handleAddToCart(menuItem)}
+                >
                   <img src={cartIcon} alt="carticon" className="m-1" />
                   Add to Cart
                 </button>

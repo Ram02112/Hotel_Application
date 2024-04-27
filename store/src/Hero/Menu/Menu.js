@@ -13,7 +13,7 @@ const ItemMenu = () => {
       const response = await fetch("http://localhost:4000/products");
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+
         setMenuItems(data);
       } else {
         console.error("Failed to fetch menu items");
