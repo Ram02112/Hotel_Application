@@ -54,14 +54,7 @@ const Hero = () => {
                 leave had those get being led weeks blind. Had men rose from
                 down lady able. Its son him ferrars proceed six parlors.
               </p>
-              <p>
-                Advanced diverted domestic sex repeated bringing you old.
-                Possible procured her trifling laughter thoughts property she
-                met way. Companions shy had solicitude favourable own. Which
-                could saw guest man now heard but. Lasted my coming uneasy
-                marked so should. Gravity letters it amongst herself dearest an
-                windows by. Wooded ladies she basket.
-              </p>
+
               <div className="address">
                 <ul className="list-unstyled">
                   <li>
