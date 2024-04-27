@@ -1,4 +1,4 @@
-import { Layout, message } from "antd";
+import { message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import Auth from "./Auth";
@@ -17,8 +17,7 @@ import ItemMenu from "./Hero/Menu/Menu";
 import AdminMenu from "./Admin/AdminMenu";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-
-const { Content } = Layout;
+import webLogo from "./assets/img/hotel_logo.jpeg";
 
 function App() {
   let auth = useSelector((state) => state.customer?.auth);
@@ -50,6 +49,15 @@ function App() {
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <div className="container-fluid">
             <Link to="/" className="navbar-brand">
+              <img
+                src={webLogo}
+                alt=""
+                style={{
+                  height: "50px",
+                  marginRight: "5px",
+                  borderRadius: "50%",
+                }}
+              />
               Home
             </Link>
             <button
@@ -119,6 +127,15 @@ function App() {
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <div className="container-fluid">
             <Link to="/" className="navbar-brand">
+              <img
+                src={webLogo}
+                alt=""
+                style={{
+                  height: "50px",
+                  marginRight: "5px",
+                  borderRadius: "50%",
+                }}
+              />
               Home
             </Link>
             <button
@@ -192,6 +209,15 @@ function App() {
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <div className="container-fluid">
             <Link to="/" className="navbar-brand">
+              <img
+                src={webLogo}
+                alt=""
+                style={{
+                  height: "50px",
+                  marginRight: "5px",
+                  borderRadius: "50%",
+                }}
+              />
               Home
             </Link>
             <button
@@ -209,17 +235,17 @@ function App() {
               <ul className="navbar-nav ms-auto">
                 <li className="nav-item">
                   <Link to="login" className="nav-link">
-                    Login
+                    <span className="lead">Login</span>
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link to="register" className="nav-link">
-                    Register
+                    <span className="lead">Register</span>
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link to="admin/login" className="nav-link">
-                    Admin Login
+                    <span className="lead">Admin Login</span>
                   </Link>
                 </li>
               </ul>
@@ -232,9 +258,9 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Layout>
+      <div>
         {renderHeader()}
-        <Content className="app-content">
+        <div className="app-content">
           <div className="app-wrapper">
             <Routes>
               <Route
@@ -292,8 +318,8 @@ function App() {
               <Route path="/update-menu" element={<AdminMenu />} />
             </Routes>
           </div>
-        </Content>
-      </Layout>
+        </div>
+      </div>
     </BrowserRouter>
   );
 }

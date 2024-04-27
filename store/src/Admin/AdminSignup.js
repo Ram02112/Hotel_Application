@@ -1,28 +1,32 @@
-import { Button, Checkbox, Col, Form, Input, message, Row } from "antd";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import useAdmin from "../_actions/adminActions";
 
 function Register() {
-  const [form] = Form.useForm();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [agreement, setAgreement] = useState(false);
   const dispatch = useDispatch();
   const { adminRegister } = useAdmin();
 
-  const onFinish = (values) => {
-    const data = {
-      email: values.email,
-      firstName: values.firstName,
-      lastName: values.lastName,
-      password: values.password,
-    };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!agreement) {
+      alert("Please accept the agreement");
+      return;
+    }
+    const data = { firstName, lastName, email, password };
     dispatch(adminRegister(data))
       .then((res) => {
         console.log("Response:", res);
         if (res.payload.status) {
-          message.success(res.payload.message);
+          alert(res.payload.message);
         } else {
-          message.error(res.payload.message);
+          alert(res.payload.message);
         }
       })
       .catch((error) => {
@@ -31,132 +35,98 @@ function Register() {
   };
 
   return (
-    <div className="page-wrapper">
-      <Row justify="center">
-        <Col xs={24} sm={16} md={12} lg={8} xl={6} xxl={6}>
-          <h2>Admin Register</h2>
-          <Form
-            form={form}
-            name="register"
-            layout="vertical"
-            onFinish={onFinish}
-            scrollToFirstError
-          >
-            <Form.Item
-              name="firstName"
-              label="First Name"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your First Name!",
-                },
-              ]}
-            >
-              <Input
-                style={{
-                  width: "100%",
-                }}
-              />
-            </Form.Item>
-            <Form.Item
-              name="lastName"
-              label="Last Name"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your Last Name!",
-                },
-              ]}
-            >
-              <Input
-                style={{
-                  width: "100%",
-                }}
-              />
-            </Form.Item>
-            <Form.Item
-              name="email"
-              label="E-mail"
-              rules={[
-                {
-                  type: "email",
-                  message: "The input is not valid E-mail!",
-                },
-                {
-                  required: true,
-                  message: "Please input your E-mail!",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-
-            <Form.Item
-              name="password"
-              label="Password"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your password!",
-                },
-              ]}
-              hasFeedback
-            >
-              <Input.Password />
-            </Form.Item>
-
-            <Form.Item
-              name="confirm"
-              label="Confirm Password"
-              dependencies={["password"]}
-              hasFeedback
-              rules={[
-                {
-                  required: true,
-                  message: "Please confirm your password!",
-                },
-                ({ getFieldValue }) => ({
-                  validator(_, value) {
-                    if (!value || getFieldValue("password") === value) {
-                      return Promise.resolve();
-                    }
-
-                    return Promise.reject(
-                      new Error(
-                        "The two passwords that you entered do not match!"
-                      )
-                    );
-                  },
-                }),
-              ]}
-            >
-              <Input.Password />
-            </Form.Item>
-
-            <Form.Item
-              name="agreement"
-              valuePropName="checked"
-              rules={[
-                {
-                  validator: (_, value) =>
-                    value
-                      ? Promise.resolve()
-                      : Promise.reject(new Error("Should accept agreement")),
-                },
-              ]}
-            >
-              <Checkbox>
-                I have read the <Link>agreement</Link>
-              </Checkbox>
-            </Form.Item>
-            <Form.Item>
-              <Button type="primary" htmlType="submit">
-                Register
-              </Button>
-            </Form.Item>
-          </Form>
-        </Col>
-      </Row>
+    <div className="container">
+      <div className="row justify-content-center mt-5">
+        <div className="col-md-6">
+          <div className="card shadow-sm">
+            <div className="card-body">
+              <h2 className="card-title mb-4">Admin Register</h2>
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label htmlFor="firstName" className="form-label">
+                    First Name
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="firstName"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="lastName" className="form-label">
+                    Last Name
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="lastName"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label">
+                    E-mail
+                  </label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="password" className="form-label">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="confirmPassword" className="form-label">
+                    Confirm Password
+                  </label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="confirmPassword"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="mb-3 form-check">
+                  <input
+                    type="checkbox"
+                    className="form-check-input"
+                    id="agreement"
+                    checked={agreement}
+                    onChange={(e) => setAgreement(e.target.checked)}
+                  />
+                  <label className="form-check-label" htmlFor="agreement">
+                    I have read the <Link to="#">agreement</Link>
+                  </label>
+                </div>
+                <button type="submit" className="btn btn-primary w-100">
+                  Register
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

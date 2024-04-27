@@ -36,21 +36,21 @@ const Hero = () => {
       <div className="about-area default-padding">
         <div className="container">
           <div className="row">
-            <div className="col-md-6">
+            <div className="col-6">
               <img
                 src={aboutImage}
                 alt="Thumb"
-                className="img-fluid rounded"
-                style={{ maxHeight: "500px", width: "80%" }}
+                className="img-fluid rounded "
+                style={{ height: "700px", width: "100%" }}
               />
             </div>
-            <div className="col-md-6 info d-flex flex-column justify-content-center">
+            <div className="col-md-6 info d-flex flex-column justify-content-center bg-light p-6 rounded">
               <h3>Our Story</h3>
-              <h2 className="fw-light">
+              <h2 className="fw-light fs-1">
                 Until I discovered cooking I was never really interested in
                 anything
               </h2>
-              <p>
+              <p className="lead">
                 Nestled in the heart of downtown, our burger restaurant beckons
                 with the tantalizing aroma of sizzling patties and freshly baked
                 buns. Step through our doors and be greeted by the warm ambiance
@@ -70,12 +70,15 @@ const Hero = () => {
               <div className="address">
                 <ul className="list-unstyled">
                   <li>
-                    <span>Address</span>
-                    <p>22 Baker Street, London, United Kingdom, W1U 3BW</p>
+                    <h4>Address</h4>
+                    <p className="fw-light fs-6">
+                      20, floor, Queenslad Victoria Building. 60 california
+                      street california USA
+                    </p>
                   </li>
                   <li>
-                    <span>Phone</span>
-                    <p>+123 456 7890</p>
+                    <h4>Phone</h4>
+                    <p className="fw-light fs-6">+123 456 7890</p>
                   </li>
                 </ul>
               </div>
