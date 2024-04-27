@@ -288,7 +288,7 @@ function App() {
               <Route
                 path="/login"
                 element={
-                  <Auth redirectTo="/">
+                  <Auth authRoute={true} redirectTo="/">
                     <Login />
                   </Auth>
                 }
@@ -296,7 +296,7 @@ function App() {
               <Route
                 path="/register"
                 element={
-                  <Auth redirectTo="/">
+                  <Auth authRoute={true} redirectTo="/">
                     <Register />
                   </Auth>
                 }
@@ -304,7 +304,7 @@ function App() {
               <Route
                 path="/admin/login"
                 element={
-                  <Auth redirectTo="/admin-dashboard">
+                  <Auth authRoute={true} redirectTo="/admin-dashboard">
                     <AdminLogin />
                   </Auth>
                 }
@@ -312,7 +312,7 @@ function App() {
               <Route
                 path="/admin/signup"
                 element={
-                  <Auth redirectTo="/admin-dashboard">
+                  <Auth authRoute={true} redirectTo="/admin-dashboard">
                     <AdminSignupForm />
                   </Auth>
                 }
