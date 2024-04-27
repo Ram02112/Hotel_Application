@@ -23,29 +23,30 @@ const Hero = () => {
           backgroundRepeat: "no-repeat",
           height: "100vh",
         }}
+        className="d-flex justify-content-center align-items-center"
       >
-        <div className="content d-flex flex-column">
-          <h3 className="text-light fw-light">Welcome to RestCafe</h3>
-          <h1 className="text-light fw-light fs-1">
-            Awesome delicious food Collections
-          </h1>
+        <div className="content text-center text-light ">
+          <h3 className="fw-light fs-1 ">Welcome to RestCafe</h3>
+          <h1 className="fw-light fs-1">Awesome delicious food Collections</h1>
         </div>
       </div>
-      <br /> <br />
+      <br />
+      <br />
+
       <div className="about-area default-padding">
         <div className="container">
           <div className="row">
-            <div className="col-md-6 thumb">
+            <div className="col-md-6">
               <img
                 src={aboutImage}
                 alt="Thumb"
-                className="img-fluid"
-                style={{ height: 500, width: 500 }}
+                className="img-fluid rounded"
+                style={{ maxHeight: "500px", width: "80%" }}
               />
             </div>
-            <div className="col-md-6 info">
+            <div className="col-md-6 info d-flex flex-column justify-content-center">
               <h3>Our Story</h3>
-              <h2>
+              <h2 className="fw-light">
                 Until I discovered cooking I was never really interested in
                 anything
               </h2>
@@ -84,24 +85,16 @@ const Hero = () => {
       </div>
       <br />
       <br />
-      <div className="row d-flex justify-content-center">
-        <div className="col-md-8 col-md-offset-2">
-          <div className="site-heading text-center">
-            <h3>Discover</h3>
-            <h2>Our Menu</h2>
-            <p>
-              While mirth large of on front. Ye he greater related adapted
-              proceed entered an. Through it examine express promise no. Past
-              add size game cold girl off how old
-            </p>
-          </div>
-        </div>
+
+      <div className="site-heading text-center bg-dark text-light p-1">
+        <h1 className="fw-light">Our Menu</h1>
       </div>
       <br />
+
       <div className="container mx-auto">
         <div className="row">
           {menuItems.map((item) => (
-            <div className="col-md-4" key={item._id}>
+            <div className="col-md-4 mb-4" key={item._id}>
               <FoodMenuItem
                 image={item.image}
                 price={item.price}

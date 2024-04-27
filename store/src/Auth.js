@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import useCustomers from "./_actions/customerActions";
 import useAdmin from "./_actions/adminActions";
-
+import useCart from "./_actions/cartActions";
 function Auth({ authRoute, redirectTo, children }) {
   let auth = useSelector((state) => state.customer.auth);
   let adminAuths = useSelector((state) => state.admin.adminAuth);
   const { customerAuth } = useCustomers();
   const { adminAuth } = useAdmin();
+  const { getCartItems } = useCart();
   const dispatch = useDispatch();
   let navigate = useNavigate();
 
@@ -19,6 +20,7 @@ function Auth({ authRoute, redirectTo, children }) {
           navigate(redirectTo);
         }
       } else {
+        getCartItems();
         if (!authRoute) {
           navigate(redirectTo);
         }

@@ -1,6 +1,6 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import cartIcon from "../../assets/img/cart.svg";
 const MenuItems = ({ menuItems }) => {
   return (
     <div className="container">
@@ -25,6 +25,10 @@ const MenuItems = ({ menuItems }) => {
                 <p className="card-text fs-9 ">
                   <b>Calories</b> - {menuItem.calories} Kcal
                 </p>
+                <button className="btn btn-primary d-flex justify-content-between align-items-center">
+                  <img src={cartIcon} alt="carticon" className="m-1" />
+                  Add to Cart
+                </button>
               </div>
             </div>
           </div>

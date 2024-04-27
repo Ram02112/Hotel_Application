@@ -11,7 +11,6 @@ const initialState = {
 const customerReducer = (state = initialState, action) => {
   switch (action.type) {
     case CUSTOMER_LOGIN:
-      console.log("login payload: ", action.payload);
       return {
         auth: {
           data: action.payload?.data?.customer,

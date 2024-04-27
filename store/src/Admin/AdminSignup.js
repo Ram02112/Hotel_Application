@@ -1,5 +1,6 @@
 import { Button, Checkbox, Col, Form, Input, message, Row } from "antd";
 import React from "react";
+import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import useAdmin from "../_actions/adminActions";
 
@@ -145,7 +146,7 @@ function Register() {
               ]}
             >
               <Checkbox>
-                I have read the <a href="">agreement</a>
+                I have read the <Link>agreement</Link>
               </Checkbox>
             </Form.Item>
             <Form.Item>

@@ -1,5 +1,4 @@
-import { UserOutlined } from "@ant-design/icons";
-import { Layout, Menu, message } from "antd";
+import { Layout, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import Auth from "./Auth";
@@ -17,9 +16,9 @@ import Admin from "./Admin/Admin";
 import ItemMenu from "./Hero/Menu/Menu";
 import AdminMenu from "./Admin/AdminMenu";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
-const { Header, Content } = Layout;
-const { SubMenu } = Menu;
+const { Content } = Layout;
 
 function App() {
   let auth = useSelector((state) => state.customer?.auth);
@@ -28,21 +27,19 @@ function App() {
   const { adminLogout } = useAdmin();
   const dispatch = useDispatch();
 
-  const handleLogout = ({ key }) => {
-    if (key === "logout") {
-      dispatch(customerLogout()).then((res) => {
-        if (res.payload.status) {
-          localStorage.removeItem("customerToken");
-          message.success(res.payload.message);
-          dispatch(adminLogout()).then((adminRes) => {
-            if (adminRes.payload.status) {
-              localStorage.removeItem("adminToken");
-              message.success(adminRes.payload.message);
-            }
-          });
-        }
-      });
-    }
+  const handleLogout = () => {
+    dispatch(customerLogout()).then((res) => {
+      if (res.payload.status) {
+        localStorage.removeItem("customerToken");
+        message.success(res.payload.message);
+        dispatch(adminLogout()).then((adminRes) => {
+          if (adminRes.payload.status) {
+            localStorage.removeItem("adminToken");
+            message.success(adminRes.payload.message);
+          }
+        });
+      }
+    });
   };
 
   const renderHeader = () => {
@@ -50,131 +47,185 @@ function App() {
       // Render navigation bar for authenticated user
       const fullName = `${auth?.data?.firstName} ${auth?.data?.lastName}`;
       return (
-        <Header className="app-header bg-dark">
-          <Menu
-            theme="dark"
-            mode="horizontal"
-            defaultSelectedKeys={["home"]}
-            onClick={handleLogout}
-          >
-            <Menu.Item key="home">
-              <Link to="/" className="nav-link">
-                <span className="nav-link-text">Home</span>
-              </Link>
-            </Menu.Item>
-            <SubMenu
-              key="account"
-              icon={<UserOutlined />}
-              title={`Hi ${fullName}`}
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+          <div className="container-fluid">
+            <Link to="/" className="navbar-brand">
+              Home
+            </Link>
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
             >
-              <Menu.Item key="changePassword">
-                <Link to="changePassword" className="nav-link">
-                  <span className="nav-link-text">Change Password</span>
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="logout">Logout</Menu.Item>
-            </SubMenu>
-            <Menu.Item key="menu">
-              <Link to="menu" className="nav-link">
-                <span className="nav-link-text">Menu</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="cart">
-              <Link className="nav-link">
-                <span className="nav-link-text">Cart</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="orderHistory">
-              <Link className="nav-link">
-                <span className="nav-link-text">Order History</span>
-              </Link>
-            </Menu.Item>
-          </Menu>
-        </Header>
+              <span className="navbar-toggler-icon"></span>
+            </button>
+            <div className="collapse navbar-collapse" id="navbarNav">
+              <ul className="navbar-nav ms-auto">
+                <li className="nav-item dropdown">
+                  <a
+                    className="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Hi {fullName}
+                  </a>
+                  <ul
+                    className="dropdown-menu"
+                    aria-labelledby="navbarDropdown"
+                  >
+                    <li>
+                      <Link to="changePassword" className="dropdown-item">
+                        Change Password
+                      </Link>
+                    </li>
+                    <li>
+                      <button className="dropdown-item" onClick={handleLogout}>
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </li>
+                <li className="nav-item">
+                  <Link to="menu" className="nav-link">
+                    Menu
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="cart" className="nav-link">
+                    Cart
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="orderHistory" className="nav-link">
+                    Order History
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
       );
     } else if (adminAuth && adminAuth.status) {
       // Render navigation bar for authenticated admin
       const adminName = `${adminAuth?.data?.firstName} ${adminAuth?.data?.lastName}`;
       return (
-        <Header className="app-header">
-          <Menu
-            theme="dark"
-            mode="horizontal"
-            defaultSelectedKeys={["home"]}
-            onClick={handleLogout}
-          >
-            <Menu.Item key="home">
-              <Link to="/" className="nav-link">
-                <span className="nav-link-text">Home</span>
-              </Link>
-            </Menu.Item>
-            <SubMenu
-              key="account"
-              icon={<UserOutlined />}
-              title={`Hi ${adminName}`}
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+          <div className="container-fluid">
+            <Link to="/" className="navbar-brand">
+              Home
+            </Link>
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
             >
-              <Menu.Item key="changePassword">
-                <Link to="changePassword" className="nav-link">
-                  <span className="nav-link-text">Change Password</span>
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="logout">Logout</Menu.Item>
-            </SubMenu>
-            <Menu.Item key="adminDashboard">
-              <Link to="/admin-dashboard" className="nav-link">
-                <span className="nav-link-text">Add Menu</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="menu_crud">
-              <Link to="/update-menu" className="nav-link">
-                <span className="nav-link-text">Update Menu</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item>
-              <Link className="nav-link">
-                <span className="nav-link-text">Inventory</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item>
-              <Link className="nav-link">
-                <span className="nav-link-text">Report</span>
-              </Link>
-            </Menu.Item>
-          </Menu>
-        </Header>
+              <span className="navbar-toggler-icon"></span>
+            </button>
+            <div className="collapse navbar-collapse" id="navbarNav">
+              <ul className="navbar-nav ms-auto">
+                <li className="nav-item dropdown">
+                  <a
+                    className="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Hi {adminName}
+                  </a>
+                  <ul
+                    className="dropdown-menu"
+                    aria-labelledby="navbarDropdown"
+                  >
+                    <li>
+                      <Link to="changePassword" className="dropdown-item">
+                        Change Password
+                      </Link>
+                    </li>
+                    <li>
+                      <button className="dropdown-item" onClick={handleLogout}>
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </li>
+                <li className="nav-item">
+                  <Link to="/admin-dashboard" className="nav-link">
+                    Add Menu
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/update-menu" className="nav-link">
+                    Update Menu
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/inventory" className="nav-link">
+                    Inventory
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/report" className="nav-link">
+                    Report
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
       );
     } else {
       // Render navigation bar for logged out users
       return (
-        <Header className="app-header">
-          <Menu
-            theme="dark"
-            mode="horizontal"
-            defaultSelectedKeys={["home"]}
-            onClick={handleLogout}
-          >
-            <Menu.Item key="home">
-              <Link to="/" className="nav-link">
-                <span className="nav-link-text">Home</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="login">
-              <Link to="login" className="nav-link">
-                <span className="nav-link-text">Login</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="register">
-              <Link to="register" className="nav-link">
-                <span className="nav-link-text">Register</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="admin/login">
-              <Link to="admin/login" className="nav-link">
-                <span className="nav-link-text">Admin Login</span>
-              </Link>
-            </Menu.Item>
-          </Menu>
-        </Header>
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+          <div className="container-fluid">
+            <Link to="/" className="navbar-brand">
+              Home
+            </Link>
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span className="navbar-toggler-icon"></span>
+            </button>
+            <div className="collapse navbar-collapse" id="navbarNav">
+              <ul className="navbar-nav ms-auto">
+                <li className="nav-item">
+                  <Link to="login" className="nav-link">
+                    Login
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="register" className="nav-link">
+                    Register
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="admin/login" className="nav-link">
+                    Admin Login
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
       );
     }
   };
