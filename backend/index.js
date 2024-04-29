@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 
 const cors = require("cors");
 mongoURI = "mongodb://localhost:27017/burger-restaurant";
+// mongodb+srv://komaliadapa1:komali@restaurant-management.7h3cqmo.mongodb.net/restaurant?retryWrites=true&w=majority&appName=restaurant-management
 mongoose
   .connect(mongoURI, {
     useNewUrlParser: true,

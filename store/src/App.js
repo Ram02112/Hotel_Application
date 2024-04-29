@@ -301,22 +301,8 @@ function App() {
                   </Auth>
                 }
               />
-              <Route
-                path="/admin/login"
-                element={
-                  <Auth authRoute={true} redirectTo="/admin-dashboard">
-                    <AdminLogin />
-                  </Auth>
-                }
-              />
-              <Route
-                path="/admin/signup"
-                element={
-                  <Auth authRoute={true} redirectTo="/admin-dashboard">
-                    <AdminSignupForm />
-                  </Auth>
-                }
-              />
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin/signup" element={<AdminSignupForm />} />
               <Route
                 path="/admin-dashboard"
                 element={
