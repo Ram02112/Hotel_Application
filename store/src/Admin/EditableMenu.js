@@ -5,6 +5,7 @@ import { Modal, Button, Form } from "react-bootstrap";
 const EditableMenu = ({ menuItems }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
 
   useEffect(() => {
     if (menuItems && menuItems.length > 0) {
@@ -30,7 +31,7 @@ const EditableMenu = ({ menuItems }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(selectedMenuItem),
+          body: JSON.stringify(selectedMenuItem), // Include imageUrl in the request body
         }
       );
 
@@ -92,6 +93,7 @@ const EditableMenu = ({ menuItems }) => {
             <th>Name</th>
             <th>Price</th>
             <th>Description</th>
+            <th>Calories</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -101,6 +103,7 @@ const EditableMenu = ({ menuItems }) => {
               <td>{menuItem.name}</td>
               <td>${menuItem.price.toFixed(2)}</td>
               <td>{menuItem.description}</td>
+              <td>{menuItem.calories}</td>
               <td>
                 <button
                   className="btn btn-primary btn-sm me-1"
@@ -178,6 +181,20 @@ const EditableMenu = ({ menuItems }) => {
                   setSelectedMenuItem({
                     ...selectedMenuItem,
                     description: e.target.value,
+                  })
+                }
+              />
+            </Form.Group>
+            <Form.Group controlId="formImageUrl">
+              <Form.Label>Image URL</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter image URL"
+                value={imageUrl}
+                onChange={(e) =>
+                  setSelectedMenuItem({
+                    ...selectedMenuItem,
+                    image: e.target.value,
                   })
                 }
               />
