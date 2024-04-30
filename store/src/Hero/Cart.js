@@ -3,11 +3,18 @@ import { useSelector, useDispatch } from "react-redux";
 import useCart from "../_actions/cartActions";
 import { message } from "antd";
 import { FaEdit, FaSave, FaTimes, FaTrash } from "react-icons/fa";
-
+import { sumBy } from "lodash";
+import StripeCheckout from "react-stripe-checkout";
+import useOrders from "../_actions/orderActions";
 const Cart = () => {
   const dispatch = useDispatch();
-  const { updateCartItems, deleteCartItems } = useCart();
+  const { updateCartItems, deleteCartItems, clearCart } = useCart();
+
+  const { checkout } = useOrders();
   const cartItems = useSelector((state) => state.cart.cartItems?.cartDetails);
+
+  const auth = useSelector((state) => state.customer.auth);
+
   const [editItem, setEditItem] = useState(null);
   const [quantity, setQuantity] = useState(null);
 
@@ -39,6 +46,16 @@ const Cart = () => {
     dispatch(deleteCartItems(item._product)).then((res) => {
       if (res.payload.status) {
         message.success(res.payload.message);
+      } else {
+        message.error(res.payload.message);
+      }
+    });
+  };
+
+  const handlePayment = (token, total) => {
+    dispatch(checkout({ token, total })).then((res) => {
+      if (res.payload.status) {
+        clearCart();
       } else {
         message.error(res.payload.message);
       }
@@ -132,11 +149,31 @@ const Cart = () => {
       </div>
     );
   };
-
+  const renderCheckout = () => {
+    const total = sumBy(cartItems, (item) => item.amount);
+    if (cartItems?.length > 0) {
+      return (
+        <center>
+          <p>Total Amount : $ {total}</p>
+          <StripeCheckout
+            name="payment"
+            email={auth?.data?.email}
+            description="Order Payment"
+            amount={total * 100}
+            token={(token) => handlePayment(token, total)}
+            stripeKey="pk_test_51PBA8YRqKgtFpEdWZ4ngjn5FKwzaR3wgtGgtyzBCyr8MnwBQZGdbUzmKvbEpiEWjtdDayyMsbXNGguE78tgjsI2800VOS4LBtD"
+          >
+            <button className="btn btn-primary">Pay Now</button>
+          </StripeCheckout>
+        </center>
+      );
+    }
+  };
   return (
     <div className="container mt-4">
       <h1 className="mb-4">Cart</h1>
       {renderCartItems()}
+      {renderCheckout()}
     </div>
   );
 };

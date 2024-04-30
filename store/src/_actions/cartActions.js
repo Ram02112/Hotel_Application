@@ -5,6 +5,7 @@ import {
   GET_CART_ITEM,
   UPDATE_CART_ITEM,
   REMOVE_CART_ITEM,
+  CLEAR_CART_ITEM,
 } from "./types";
 
 export default function useCart() {
@@ -74,10 +75,18 @@ export default function useCart() {
       payload: result,
     });
   };
+
+  const clearCart = () => {
+    dispatch({
+      type: CLEAR_CART_ITEM,
+    });
+  };
+
   return {
     getCartItems,
     addToCart,
     updateCartItems,
     deleteCartItems,
+    clearCart,
   };
 }

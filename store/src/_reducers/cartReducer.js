@@ -3,6 +3,7 @@ import {
   GET_CART_ITEM,
   UPDATE_CART_ITEM,
   REMOVE_CART_ITEM,
+  CLEAR_CART_ITEM,
 } from "../_actions/types";
 
 const initialState = {
@@ -26,6 +27,10 @@ const cartReducer = (state = initialState, action) => {
     case REMOVE_CART_ITEM:
       return {
         cartItems: action.payload.data,
+      };
+    case CLEAR_CART_ITEM:
+      return {
+        cartItems: [],
       };
     default:
       return state;
