@@ -1,6 +1,6 @@
 import { message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import Auth from "./Auth";
 import ChangePassword from "./containers/ChangePassword";
 import ForgotPassord from "./containers/ForgotPassord";
@@ -20,6 +20,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import webLogo from "./assets/img/hotel_logo.jpeg";
 import { sumBy } from "lodash";
+// import OrderHistory from "./Hero/OrderHistory";
 
 function App() {
   let auth = useSelector((state) => state.customer?.auth);
@@ -28,6 +29,7 @@ function App() {
   const { customerLogout } = useCustomers();
   const { adminLogout } = useAdmin();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const itemCount = sumBy(cartItems, (item) => item?.quantity);
 
   const handleLogout = () => {
@@ -35,12 +37,17 @@ function App() {
       if (res.payload.status) {
         localStorage.removeItem("customerToken");
         message.success(res.payload.message);
-        dispatch(adminLogout()).then((adminRes) => {
-          if (adminRes.payload.status) {
-            localStorage.removeItem("adminToken");
-            message.success(adminRes.payload.message);
-          }
-        });
+        navigate("/");
+      }
+    });
+  };
+
+  const handleAdminLogout = () => {
+    dispatch(adminLogout()).then((adminRes) => {
+      if (adminRes.payload.status) {
+        localStorage.removeItem("adminToken");
+        message.success(adminRes.payload.message);
+        navigate("/");
       }
     });
   };
@@ -176,7 +183,10 @@ function App() {
                       </Link>
                     </li>
                     <li>
-                      <button className="dropdown-item" onClick={handleLogout}>
+                      <button
+                        className="dropdown-item"
+                        onClick={handleAdminLogout}
+                      >
                         Logout
                       </button>
                     </li>
@@ -238,17 +248,17 @@ function App() {
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav ms-auto">
                 <li className="nav-item">
-                  <Link to="login" className="nav-link">
+                  <Link to="/login" className="nav-link">
                     <span className="lead">Login</span>
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="register" className="nav-link">
+                  <Link to="/register" className="nav-link">
                     <span className="lead">Register</span>
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="admin/login" className="nav-link">
+                  <Link to="/admin/login" className="nav-link">
                     <span className="lead">Admin Login</span>
                   </Link>
                 </li>
@@ -261,86 +271,91 @@ function App() {
   };
 
   return (
-    <BrowserRouter>
-      <div>
-        {renderHeader()}
-        <div className="app-content">
-          <div className="app-wrapper">
-            <Routes>
-              <Route
-                path="/"
+    <div>
+      {renderHeader()}
+      <div className="app-content">
+        <div className="app-wrapper">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Auth>
+                  <Home />
+                </Auth>
+              }
+            />
+            <Route path="/forgotPassword" element={<ForgotPassord />} />
+            <Route path="/resetPassword/:token" element={<ResetPassword />} />
+            <Route
+              path="/changePassword"
+              element={
+                <Auth authRoute={true} redirectTo="/login">
+                  <ChangePassword />
+                </Auth>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <Auth authRoute={true} redirectTo="/">
+                  <Login />
+                </Auth>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <Auth authRoute={true} redirectTo="/">
+                  <Register />
+                </Auth>
+              }
+            />
+            <Route
+              path="/admin/login"
+              element={
+                <Auth authRoute={true} redirectTo="/">
+                  <AdminLogin />
+                </Auth>
+              }
+            />
+            <Route path="/admin/signup" element={<AdminSignupForm />} />
+            <Route path="/admin-dashboard" element={<Admin />} />
+            <Route
+              path="/menu"
+              element={
+                <Auth authRoute={true} redirectTo="/">
+                  <ItemMenu />
+                </Auth>
+              }
+            />
+            <Route
+              path="/update-menu"
+              element={
+                <Auth authRoute={true} redirectTo="/update-menu">
+                  <AdminMenu />
+                </Auth>
+              }
+            />
+            <Route
+              path="/cart"
+              element={
+                <Auth authRoute={true} redirectTo="/">
+                  <Cart />
+                </Auth>
+              }
+            />
+            {/* <Route
+                path="/orderHistory"
                 element={
-                  <Auth>
-                    <Home />
+                  <Auth authRoute={true} redirectTo={"/orderHistory"}>
+                    <OrderHistory />
                   </Auth>
                 }
-              />
-              <Route path="/forgotPassword" element={<ForgotPassord />} />
-              <Route path="/resetPassword/:token" element={<ResetPassword />} />
-              <Route
-                path="/changePassword"
-                element={
-                  <Auth authRoute={true} redirectTo="/login">
-                    <ChangePassword />
-                  </Auth>
-                }
-              />
-              <Route
-                path="/login"
-                element={
-                  <Auth authRoute={true} redirectTo="/">
-                    <Login />
-                  </Auth>
-                }
-              />
-              <Route
-                path="/register"
-                element={
-                  <Auth authRoute={true} redirectTo="/">
-                    <Register />
-                  </Auth>
-                }
-              />
-              <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/admin/signup" element={<AdminSignupForm />} />
-
-              <Route
-                path="/admin-dashboard"
-                element={
-                  <Auth authRoute={true} redirectTo="/admin-dashboard">
-                    <Admin />
-                  </Auth>
-                }
-              />
-              <Route
-                path="/menu"
-                element={
-                  <Auth authRoute={true} redirectTo="/menu">
-                    <ItemMenu />
-                  </Auth>
-                }
-              />
-              <Route
-                path="/update-menu"
-                element={
-                  <Auth authRoute={true} redirectTo={"/update-menu"}>
-                    <AdminMenu />
-                  </Auth>
-                }
-              />
-              <Route
-                path="/cart"
-                element={
-                  <Auth authRoute={true} redirectTo="/cart">
-                    <Cart />
-                  </Auth>
-                }
-              />
-            </Routes>
-          </div>
+              /> */}
+          </Routes>
         </div>
       </div>
-    </BrowserRouter>
+    </div>
   );
 }
 

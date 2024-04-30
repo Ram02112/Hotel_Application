@@ -6,6 +6,7 @@ import { FaEdit, FaSave, FaTimes, FaTrash } from "react-icons/fa";
 import { sumBy } from "lodash";
 import StripeCheckout from "react-stripe-checkout";
 import useOrders from "../_actions/orderActions";
+import OrderHistory from "./OrderHistory";
 const Cart = () => {
   const dispatch = useDispatch();
   const { updateCartItems, deleteCartItems, clearCart } = useCart();
@@ -17,6 +18,8 @@ const Cart = () => {
 
   const [editItem, setEditItem] = useState(null);
   const [quantity, setQuantity] = useState(null);
+
+  const [showResult, setShowResult] = useState(false);
 
   const handleEdit = (item) => {
     setEditItem(item);
@@ -43,7 +46,7 @@ const Cart = () => {
   };
 
   const handleDelete = (item) => {
-    dispatch(deleteCartItems(item._product)).then((res) => {
+    dispatch(deleteCartItems(item._product._id)).then((res) => {
       if (res.payload.status) {
         message.success(res.payload.message);
       } else {
@@ -56,6 +59,7 @@ const Cart = () => {
     dispatch(checkout({ token, total })).then((res) => {
       if (res.payload.status) {
         clearCart();
+        setShowResult(true);
       } else {
         message.error(res.payload.message);
       }
@@ -174,6 +178,10 @@ const Cart = () => {
       <h1 className="mb-4">Cart</h1>
       {renderCartItems()}
       {renderCheckout()}
+      <OrderHistory
+        visible={showResult}
+        oncCancel={() => setShowResult(false)}
+      />
     </div>
   );
 };

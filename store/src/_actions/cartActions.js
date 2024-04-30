@@ -46,8 +46,8 @@ export default function useCart() {
 
   const deleteCartItems = (productId) => {
     const result = axios
-      .delete(
-        `http://localhost:4000/cart/removeCartItems/${productId}`,
+      .put(
+        `http://localhost:4000/cart/removeCartItem/${productId}`,
         false,
         config
       )

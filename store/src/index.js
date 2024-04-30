@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client"; // Import createRoot from react-d
 import { Provider } from "react-redux";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter } from "react-router-dom";
 
 import configureStore from "./_reduxStore/configStore";
 
@@ -10,11 +11,13 @@ const store = configureStore();
 
 // Use createRoot instead of ReactDOM.render
 createRoot(document.getElementById("root")).render(
-  <Provider store={store}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </Provider>
+  <BrowserRouter>
+    <Provider store={store}>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </Provider>
+  </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function
