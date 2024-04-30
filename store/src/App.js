@@ -20,7 +20,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import webLogo from "./assets/img/hotel_logo.jpeg";
 import { sumBy } from "lodash";
-// import OrderHistory from "./Hero/OrderHistory";
+import OrderHistory from "./Hero/OrderHistory";
 
 function App() {
   let auth = useSelector((state) => state.customer?.auth);
@@ -344,14 +344,14 @@ function App() {
                 </Auth>
               }
             />
-            {/* <Route
-                path="/orderHistory"
-                element={
-                  <Auth authRoute={true} redirectTo={"/orderHistory"}>
-                    <OrderHistory />
-                  </Auth>
-                }
-              /> */}
+            <Route
+              path="/orderHistory"
+              element={
+                <Auth authRoute={true} redirectTo="/">
+                  <OrderHistory />
+                </Auth>
+              }
+            />
           </Routes>
         </div>
       </div>

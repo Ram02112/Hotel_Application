@@ -6,7 +6,7 @@ import { FaEdit, FaSave, FaTimes, FaTrash } from "react-icons/fa";
 import { sumBy } from "lodash";
 import StripeCheckout from "react-stripe-checkout";
 import useOrders from "../_actions/orderActions";
-import OrderHistory from "./OrderHistory";
+import OrderResult from "./OrderResult";
 const Cart = () => {
   const dispatch = useDispatch();
   const { updateCartItems, deleteCartItems, clearCart } = useCart();
@@ -178,7 +178,7 @@ const Cart = () => {
       <h1 className="mb-4">Cart</h1>
       {renderCartItems()}
       {renderCheckout()}
-      <OrderHistory
+      <OrderResult
         visible={showResult}
         oncCancel={() => setShowResult(false)}
       />

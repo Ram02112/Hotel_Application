@@ -67,7 +67,7 @@ router.post("/addToCart", auth, async (req, res) => {
         cartDetails: [cartDetails],
       });
       const savedCart = await newCart.save();
-      const populatedCart = await savedCart.populate(populate).execPopulate();
+      const populatedCart = await savedCart.populate(populate);
       return res.status(200).json({
         status: true,
         message: "Added successfully",
