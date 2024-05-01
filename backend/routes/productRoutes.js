@@ -37,7 +37,7 @@ router.post("/create", async (req, res) => {
     const savedProduct = await product.save();
     res.status(200).json({
       status: true,
-      message: "Create Product success",
+      message: "Added Item to menu successfully",
       data: savedProduct,
     });
   } catch (error) {

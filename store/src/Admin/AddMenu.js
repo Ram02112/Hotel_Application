@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import { message } from "antd";
 const AddMenuItemForm = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -32,6 +32,8 @@ const AddMenuItemForm = () => {
         setPrice("");
         setImageURL("");
         console.log("Menu item added successfully!");
+        const res = await response.json();
+        message.success(res.message);
       } else {
         console.error("Failed to add menu item:", response.statusText);
       }
