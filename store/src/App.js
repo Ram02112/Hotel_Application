@@ -54,7 +54,6 @@ function App() {
 
   const renderHeader = () => {
     if (auth && auth.status) {
-      // Render navigation bar for authenticated user
       const fullName = `${auth?.data?.firstName} ${auth?.data?.lastName}`;
       return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -331,7 +330,7 @@ function App() {
             <Route
               path="/update-menu"
               element={
-                <Auth authRoute={true} redirectTo="/update-menu">
+                <Auth authRoute={true} redirectTo="/">
                   <AdminMenu />
                 </Auth>
               }
