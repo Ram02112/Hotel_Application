@@ -27,9 +27,10 @@ router.post("/checkout", auth, (req, res) => {
   }).exec(async (err, data) => {
     if (err) return res.status(400).json({ success: false, err });
     const token = req.body.token;
-    const totalAmount = req.body.total;
+    let totalAmount = req.body.total;
+    totalAmount = Math.round(totalAmount);
     const charge = await stripe.charges.create({
-      amount: totalAmount * 100,
+      amount: totalAmount,
       currency: "usd",
       description: "Payment for Order",
       source: token.id,

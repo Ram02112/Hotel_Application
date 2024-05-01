@@ -5,7 +5,7 @@ import { Modal, Button, Form } from "react-bootstrap";
 const EditableMenu = ({ menuItems }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState(null);
-  const [imageUrl, setImageUrl] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
     if (menuItems && menuItems.length > 0) {
@@ -31,7 +31,7 @@ const EditableMenu = ({ menuItems }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(selectedMenuItem), // Include imageUrl in the request body
+          body: JSON.stringify(selectedMenuItem),
         }
       );
 
