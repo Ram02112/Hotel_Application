@@ -23,7 +23,6 @@ const OrderResult = (props) => {
           <Button type="primary" key="console" onClick={handleGoBack}>
             Go to Home
           </Button>,
-          <Button key="close">Close</Button>,
         ]}
       />
     </Modal>

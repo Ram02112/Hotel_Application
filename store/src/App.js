@@ -21,6 +21,8 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import webLogo from "./assets/img/hotel_logo.jpeg";
 import { sumBy } from "lodash";
 import OrderHistory from "./Hero/OrderHistory";
+import ReportPage from "./Admin/Report";
+import Inventory from "./Admin/Inventory";
 
 function App() {
   let auth = useSelector((state) => state.customer?.auth);
@@ -318,12 +320,27 @@ function App() {
               }
             />
             <Route path="/admin/signup" element={<AdminSignupForm />} />
-            <Route path="/admin-dashboard" element={<Admin />} />
+            <Route
+              path="/admin-dashboard"
+              element={
+                <Auth authRoute={true} redirectTo="/">
+                  <Admin />
+                </Auth>
+              }
+            />
             <Route
               path="/menu"
               element={
                 <Auth authRoute={true} redirectTo="/">
                   <ItemMenu />
+                </Auth>
+              }
+            />
+            <Route
+              path="/report"
+              element={
+                <Auth authRoute={true} redirectTo="/">
+                  <ReportPage />
                 </Auth>
               }
             />
@@ -348,6 +365,14 @@ function App() {
               element={
                 <Auth authRoute={true} redirectTo="/">
                   <OrderHistory />
+                </Auth>
+              }
+            />
+            <Route
+              path="/inventory"
+              element={
+                <Auth authRoute={true} redirectTo="/">
+                  <Inventory />
                 </Auth>
               }
             />

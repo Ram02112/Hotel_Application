@@ -163,7 +163,7 @@ const Cart = () => {
             name="payment"
             email={auth?.data?.email}
             description="Order Payment"
-            amount={Math.round(total * 100)}
+            amount={Math.floor(total * 100)}
             token={(token) => handlePayment(token, total)}
             stripeKey="pk_test_51PBA8YRqKgtFpEdWZ4ngjn5FKwzaR3wgtGgtyzBCyr8MnwBQZGdbUzmKvbEpiEWjtdDayyMsbXNGguE78tgjsI2800VOS4LBtD"
           >

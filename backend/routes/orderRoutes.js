@@ -27,10 +27,9 @@ router.post("/checkout", auth, (req, res) => {
   }).exec(async (err, data) => {
     if (err) return res.status(400).json({ success: false, err });
     const token = req.body.token;
-    let totalAmount = req.body.total;
-    totalAmount = Math.round(totalAmount);
+    const totalAmount = req.body.total;
     const charge = await stripe.charges.create({
-      amount: totalAmount,
+      amount: totalAmount * 100,
       currency: "usd",
       description: "Payment for Order",
       source: token.id,
@@ -77,6 +76,24 @@ router.get("/orderHistory", auth, (req, res) => {
       return res.status(200).json({
         status: true,
         message: "Order History found successfully",
+        data,
+      });
+    });
+});
+
+router.get("/report", auth, (req, res) => {
+  Order.find()
+    .sort({ orderDate: "desc" })
+    .populate(populate)
+    .exec((err, data) => {
+      if (err)
+        return res.status(400).json({
+          status: false,
+          err,
+        });
+      return res.status(200).json({
+        status: true,
+        message: "Report data found successfully",
         data,
       });
     });
