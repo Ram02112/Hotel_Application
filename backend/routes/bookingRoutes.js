@@ -1,0 +1,68 @@
+const router = require("express").Router();
+const Booking = require("../models/Booking");
+const { Customer } = require("../models/Customer");
+
+router.post("/add", async (req, res) => {
+  try {
+    const date = Date.parse(req.body.date);
+    const time = req.body.time;
+    const numberOfPeople = Number(req.body.numberOfPeople);
+    const customerEmail = req.body.customerEmail;
+    const existingBooking = await Booking.findOne({ date, time });
+    if (existingBooking) {
+      return res.status(400).json({
+        status: false,
+        message: "A booking already exists for this time slot",
+      });
+    }
+
+    const customer = await Customer.findOne({ email: customerEmail });
+    if (!customer) {
+      return res.status(404).json({ message: "Customer not found" });
+    }
+
+    const newBooking = new Booking({
+      date,
+      time,
+      numberOfPeople,
+      customer: customer._id,
+    });
+
+    const savedBooking = await newBooking.save();
+
+    res
+      .status(200)
+      .json({ status: true, message: "Booking added!", data: savedBooking });
+  } catch (err) {
+    res.status(400).json({ status: false, message: "Error", error: err });
+  }
+});
+
+router.get("/customer/:customerEmail", async (req, res) => {
+  try {
+    const customerEmail = req.params.customerEmail;
+    const customer = await Customer.findOne({ email: customerEmail });
+    if (!customer) {
+      return res.status(404).json({ message: "Customer not found" });
+    }
+    const bookings = await Booking.find({ customer: customer._id });
+    res
+      .status(200)
+      .json({ status: true, message: "get booking successfull", bookings });
+  } catch (err) {
+    res.status(400).json({ status: false, message: "Error", err });
+  }
+});
+
+router.delete("/cancelbooking/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Booking.findByIdAndDelete(id);
+    res.status(200).json({ message: "Booking cancelled successfully" });
+  } catch (error) {
+    console.error("Error deleting menu item:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+module.exports = router;

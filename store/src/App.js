@@ -23,6 +23,7 @@ import { sumBy } from "lodash";
 import OrderHistory from "./Hero/OrderHistory";
 import ReportPage from "./Admin/Report";
 import Inventory from "./Admin/Inventory";
+import BookingForm from "./Hero/Bookings";
 
 function App() {
   let auth = useSelector((state) => state.customer?.auth);
@@ -125,6 +126,11 @@ function App() {
                 <li className="nav-item">
                   <Link to="orderHistory" className="nav-link">
                     Order History
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="booking" className="nav-link">
+                    Bookings
                   </Link>
                 </li>
               </ul>
@@ -373,6 +379,14 @@ function App() {
               element={
                 <Auth authRoute={true} redirectTo="/">
                   <Inventory />
+                </Auth>
+              }
+            />
+            <Route
+              path="/booking"
+              element={
+                <Auth authRoute={true} redirectTo="/">
+                  <BookingForm />
                 </Auth>
               }
             />
