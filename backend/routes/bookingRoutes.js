@@ -6,6 +6,7 @@ router.post("/add", async (req, res) => {
   try {
     const date = Date.parse(req.body.date);
     const time = req.body.time;
+    const name = req.body.name;
     const numberOfPeople = Number(req.body.numberOfPeople);
     const customerEmail = req.body.customerEmail;
     const existingBooking = await Booking.findOne({ date, time });
@@ -22,6 +23,7 @@ router.post("/add", async (req, res) => {
     }
 
     const newBooking = new Booking({
+      name,
       date,
       time,
       numberOfPeople,
@@ -61,6 +63,33 @@ router.delete("/cancelbooking/:id", async (req, res) => {
     res.status(200).json({ message: "Booking cancelled successfully" });
   } catch (error) {
     console.error("Error deleting menu item:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.get("/", async (req, res) => {
+  try {
+    const bookings = await Booking.find();
+    res.status(200).json(bookings);
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  try {
+    const deletedBooking = await Booking.findByIdAndDelete(req.params.id);
+    if (!deletedBooking) {
+      return res
+        .status(404)
+        .json({ status: false, message: "Booking not found" });
+    }
+    res
+      .status(200)
+      .json({ status: true, message: "Booking deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting booking:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });

@@ -31,14 +31,13 @@ const AddMenuItemForm = () => {
         setCalories("");
         setPrice("");
         setImageURL("");
-        console.log("Menu item added successfully!");
         const res = await response.json();
         message.success(res.message);
       } else {
-        console.error("Failed to add menu item:", response.statusText);
+        message.error("Failed to add menu item:", response.statusText);
       }
     } catch (error) {
-      console.error("Error adding menu item:", error);
+      message.error("Error adding menu item:", error);
     }
   };
 

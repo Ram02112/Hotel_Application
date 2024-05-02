@@ -15,7 +15,6 @@ function Login() {
     e.preventDefault();
     const formData = { email, password };
     dispatch(adminLogin(formData)).then((res) => {
-      console.log("Response: ", res);
       if (res.payload.status) {
         const token = res.payload.data.token;
         localStorage.setItem("adminToken", token);

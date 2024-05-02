@@ -14,7 +14,6 @@ function Login() {
     e.preventDefault();
     const formData = { email, password };
     dispatch(customerLogin(formData)).then((res) => {
-      console.log("Response: ", res);
       if (res.payload.status) {
         const token = res.payload.data.token;
         localStorage.setItem("customerToken", token);

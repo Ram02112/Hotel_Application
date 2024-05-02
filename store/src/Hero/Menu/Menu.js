@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MenuItems from "./MenuItems";
+import { message } from "antd";
 
 const ItemMenu = () => {
   const [menuItems, setMenuItems] = useState([]);
@@ -16,10 +17,10 @@ const ItemMenu = () => {
 
         setMenuItems(data);
       } else {
-        console.error("Failed to fetch menu items");
+        message.error("Failed to fetch menu items");
       }
     } catch (error) {
-      console.error("Error fetching menu items:", error);
+      message.error("Error fetching menu items:", error);
     }
   };
   return (

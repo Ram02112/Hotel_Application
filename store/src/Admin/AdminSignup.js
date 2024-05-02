@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import useAdmin from "../_actions/adminActions";
+import { message } from "antd";
 
 function Register() {
   const [firstName, setFirstName] = useState("");
@@ -16,21 +17,20 @@ function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!agreement) {
-      alert("Please accept the agreement");
+      message.warning("Please accept the agreement");
       return;
     }
     const data = { firstName, lastName, email, password };
     dispatch(adminRegister(data))
       .then((res) => {
-        console.log("Response:", res);
         if (res.payload.status) {
-          alert(res.payload.message);
+          message.success(res.payload.message);
         } else {
-          alert(res.payload.message);
+          message.error(res.payload.message);
         }
       })
       .catch((error) => {
-        console.error("Error:", error);
+        message.error("Error:", error);
       });
   };
 

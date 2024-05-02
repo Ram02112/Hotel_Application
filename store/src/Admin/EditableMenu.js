@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Modal, Button, Form } from "react-bootstrap";
+import { message } from "antd";
 
 const EditableMenu = ({ menuItems }) => {
   const [showModal, setShowModal] = useState(false);
@@ -36,13 +37,13 @@ const EditableMenu = ({ menuItems }) => {
       );
 
       if (response.ok) {
-        console.log("Menu item updated successfully");
+        message.success("Menu item updated successfully");
         setShowModal(false);
       } else {
-        console.error("Failed to update menu item");
+        message.error("Failed to update menu item");
       }
     } catch (error) {
-      console.error("Error updating menu item:", error);
+      message.error("Error updating menu item:", error);
     }
   };
 
@@ -55,12 +56,12 @@ const EditableMenu = ({ menuItems }) => {
         }
       );
       if (response.ok) {
-        console.log("Menu item deleted successfully");
+        message.success("Menu item deleted successfully");
       } else {
-        console.error("Failed to delete menu item");
+        message.error("Failed to delete menu item");
       }
     } catch (error) {
-      console.error("Error deleting menu item:", error);
+      message.error("Error deleting menu item:", error);
     }
   };
 
@@ -76,12 +77,12 @@ const EditableMenu = ({ menuItems }) => {
         }),
       });
       if (response.ok) {
-        console.log("Out of stock status updated successfully");
+        message.success("Out of stock status updated successfully");
       } else {
-        console.error("Failed to update out of stock status");
+        message.error("Failed to update out of stock status");
       }
     } catch (error) {
-      console.error("Error updating out of stock status:", error);
+      message.error("Error updating out of stock status:", error);
     }
   };
 

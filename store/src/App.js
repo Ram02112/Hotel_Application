@@ -24,6 +24,7 @@ import OrderHistory from "./Hero/OrderHistory";
 import ReportPage from "./Admin/Report";
 import Inventory from "./Admin/Inventory";
 import BookingForm from "./Hero/Bookings";
+import AdminBookings from "./Admin/AdminBookings";
 
 function App() {
   let auth = useSelector((state) => state.customer?.auth);
@@ -139,7 +140,6 @@ function App() {
         </nav>
       );
     } else if (adminAuth && adminAuth.status) {
-      // Render navigation bar for authenticated admin
       const adminName = `${adminAuth?.data?.firstName} ${adminAuth?.data?.lastName}`;
       return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -219,13 +219,17 @@ function App() {
                     Report
                   </Link>
                 </li>
+                <li className="nav-item">
+                  <Link to="/admin/booking" className="nav-link">
+                    Bookings
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
         </nav>
       );
     } else {
-      // Render navigation bar for logged out users
       return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <div className="container-fluid">
@@ -387,6 +391,14 @@ function App() {
               element={
                 <Auth authRoute={true} redirectTo="/">
                   <BookingForm />
+                </Auth>
+              }
+            />
+            <Route
+              path="/admin/booking"
+              element={
+                <Auth authRoute={true} redirectTo="/">
+                  <AdminBookings />
                 </Auth>
               }
             />

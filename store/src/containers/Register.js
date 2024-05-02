@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useCustomers from "../_actions/customerActions";
+import { message } from "antd";
 
 function Register() {
   const [firstName, setFirstName] = useState("");
@@ -11,20 +12,22 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [agreement, setAgreement] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { customerRegister } = useCustomers();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!agreement) {
-      alert("Please accept the agreement");
+      message.warning("Please accept the agreement");
       return;
     }
     const data = { firstName, lastName, email, password };
     dispatch(customerRegister(data)).then((res) => {
       if (res.payload.status) {
-        alert(res.payload.message);
+        message.success(res.payload.message);
+        navigate("/");
       } else {
-        alert(res.payload.message);
+        message.error(res.payload.message);
       }
     });
   };

@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 
 function Bookings() {
   const [customerEmail, setCustomerEmail] = useState("");
+  const [name, setName] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [numberOfPeople, setNumberOfPeople] = useState("");
@@ -39,6 +40,7 @@ function Bookings() {
     try {
       const response = await axios.post("http://localhost:4000/booking/add", {
         customerEmail,
+        name,
         date,
         time,
         numberOfPeople,
@@ -46,6 +48,7 @@ function Bookings() {
       message.success(response.data.message);
       fetchExistingBookings(customerEmail);
       setCustomerEmail("");
+      setName("");
       setDate("");
       setTime("");
       setNumberOfPeople("");
@@ -75,6 +78,15 @@ function Bookings() {
               <h3 className="card-title mb-4">Make a Booking</h3>
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
+                  <label htmlFor="name">Booking Name:</label>
+                  <input
+                    type="text"
+                    id="name"
+                    required
+                    className="form-control"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
                   <label htmlFor="date">Date:</label>
                   <input
                     type="date"

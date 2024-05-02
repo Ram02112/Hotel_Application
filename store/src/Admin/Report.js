@@ -27,7 +27,6 @@ const Report = () => {
         }
 
         const responseData = await response.json();
-        console.log("Fetched data:", responseData);
 
         if (responseData.status && responseData.data) {
           setReportData(responseData.data);
@@ -55,7 +54,7 @@ const Report = () => {
       plugins: {
         legend: {
           labels: {
-            color: "#fff", // Set legend text color to white
+            color: "#fff",
           },
         },
         title: {
@@ -105,13 +104,13 @@ const Report = () => {
             {
               label: "Sales Report",
               data: amounts,
-              borderColor: "#fff", // Set the line color to white
-              backgroundColor: "rgba(255, 255, 255, 0.1)", // Set the background color to white with opacity
+              borderColor: "#fff",
+              backgroundColor: "rgba(255, 255, 255, 0.1)",
               pointBackgroundColor: "#fff",
               pointBorderColor: "#fff",
               pointHoverBackgroundColor: "#fff",
               pointHoverBorderColor: "#fff",
-              fill: true, // Fill the area below the line
+              fill: true,
             },
           ],
         }}
