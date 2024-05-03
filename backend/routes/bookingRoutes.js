@@ -5,38 +5,52 @@ const { Customer } = require("../models/Customer");
 router.post("/add", async (req, res) => {
   try {
     const date = Date.parse(req.body.date);
-    const time = req.body.time;
+    const timeSlots = req.body.time;
     const name = req.body.name;
     const numberOfPeople = Number(req.body.numberOfPeople);
     const customerEmail = req.body.customerEmail;
-    const existingBooking = await Booking.findOne({ date, time });
-    if (existingBooking) {
-      return res.status(400).json({
-        status: false,
-        message: "A booking already exists for this time slot",
+
+    for (const slot of timeSlots) {
+      const existingBookingsCount = await Booking.countDocuments({
+        date,
+        time: slot,
       });
+      if (existingBookingsCount >= 5) {
+        return res.status(400).json({
+          status: false,
+          message:
+            "Sorry!, there are no more tables for the selected time slot.",
+        });
+      }
     }
 
     const customer = await Customer.findOne({ email: customerEmail });
     if (!customer) {
-      return res.status(404).json({ message: "Customer not found" });
+      return res
+        .status(404)
+        .json({ status: false, message: "Customer not found" });
     }
 
-    const newBooking = new Booking({
-      name,
-      date,
-      time,
-      numberOfPeople,
-      customer: customer._id,
+    const newBookings = [];
+    for (const slot of timeSlots) {
+      const newBooking = new Booking({
+        name,
+        date,
+        time: slot,
+        numberOfPeople,
+        customer: customer._id,
+      });
+      newBookings.push(await newBooking.save());
+    }
+
+    res.status(200).json({
+      status: true,
+      message: "Booking(s) added successfully!",
+      data: newBookings,
     });
-
-    const savedBooking = await newBooking.save();
-
-    res
-      .status(200)
-      .json({ status: true, message: "Booking added!", data: savedBooking });
   } catch (err) {
-    res.status(400).json({ status: false, message: "Error", error: err });
+    console.error("Error adding booking:", err);
+    res.status(500).json({ status: false, message: "Internal Server Error" });
   }
 });
 

@@ -27,22 +27,11 @@ function Bookings() {
       return null;
     }
   };
-  const currentDate = new Date();
-  const currentHour = currentDate.getHours();
-  const currentMinute = currentDate.getMinutes();
 
-  const minTime = `${currentHour.toString().padStart(2, "0")}:${currentMinute
-    .toString()
-    .padStart(2, "0")}`;
   const handleTimeChange = (selectedTime) => {
-    const selectedHour = parseInt(selectedTime.split(":")[0]);
-    if (selectedHour < 10 || selectedHour >= 21) {
-      setTime("");
-      message.warning("Sorry, We are open only between 10AM to 9PM");
-    } else {
-      setTime(selectedTime);
-    }
+    setTime(selectedTime);
   };
+
   const fetchExistingBookings = async (email) => {
     try {
       const response = await axios.get(
@@ -61,19 +50,15 @@ function Bookings() {
         customerEmail,
         name,
         date,
-        time,
+        time: [time],
         numberOfPeople,
       });
       message.success(response.data.message);
       fetchExistingBookings(customerEmail);
-      setCustomerEmail("");
       setName("");
       setDate("");
       setTime("");
       setNumberOfPeople("");
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
     } catch (error) {
       message.error(error.response.data.message);
     }
@@ -89,6 +74,20 @@ function Bookings() {
     } catch (error) {
       message.error("Error deleting booking");
     }
+  };
+
+  // Generate time slots from 10 AM to 9 PM
+  const generateTimeSlots = () => {
+    const slots = [];
+    const currentHour = new Date().getHours();
+
+    for (let i = 10; i <= 21; i++) {
+      // Check if the time slot is in the future (after the current hour)
+      if (i > currentHour) {
+        slots.push(`${i}:00 - ${i + 1}:00`);
+      }
+    }
+    return slots;
   };
 
   return (
@@ -123,16 +122,24 @@ function Bookings() {
                 <br />
                 <div className="form-group">
                   <label htmlFor="time">Time:</label>
-                  <input
-                    type="time"
+                  <select
                     id="time"
                     required
-                    className="form-control"
+                    className="form-select"
                     value={time}
-                    min={minTime}
-                    max="21:00"
                     onChange={(e) => handleTimeChange(e.target.value)}
-                  />
+                  >
+                    <option value="">Select a time slot</option>
+                    {generateTimeSlots().map((slot, index) => (
+                      <option
+                        key={index}
+                        value={slot}
+                        className="list-group-item"
+                      >
+                        {slot}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <br />
                 <div className="form-group">
@@ -144,6 +151,8 @@ function Bookings() {
                     className="form-control"
                     value={numberOfPeople}
                     onChange={(e) => setNumberOfPeople(e.target.value)}
+                    max="6"
+                    min="1"
                   />
                 </div>
                 <br />

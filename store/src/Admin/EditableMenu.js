@@ -188,6 +188,21 @@ const EditableMenu = ({ menuItems }) => {
                 }
               />
             </Form.Group>
+
+            <Form.Group controlId="formImageUrl">
+              <Form.Label>Calories</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Calories"
+                value={selectedMenuItem ? selectedMenuItem.calories : ""}
+                onChange={(e) =>
+                  setSelectedMenuItem({
+                    ...selectedMenuItem,
+                    calories: e.target.value,
+                  })
+                }
+              />
+            </Form.Group>
             <Form.Group controlId="formImageUrl">
               <Form.Label>Image URL</Form.Label>
               <Form.Control

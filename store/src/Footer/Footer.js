@@ -32,13 +32,13 @@ const Footer = () => {
             <h4>Opening Hours</h4>
             <ul className="list-unstyled">
               <li>
-                <span>Mon - Tues : </span> 6.00 am - 10.00 pm
+                <span>Mon - Tues : </span> 10.00 am - 10.00 pm
               </li>
               <li>
                 <span>Wednes - Thurs :</span> closed
               </li>
               <li>
-                <span>Fri- Sun : </span> 8.00 am - 12.00 am
+                <span>Fri- Sun : </span> 10.00 am - 10.00 am
               </li>
             </ul>
           </div>
