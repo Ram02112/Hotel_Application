@@ -31,16 +31,44 @@ const MenuItems = ({ menuItems }) => {
     }));
   };
 
+  const isItemOutOfStock = (menuItem) => {
+    return menuItem.outOfStock; // Check if the item is out of stock
+  };
+
   return (
     <div className="container">
       <h2 className="text-center mb-4">Menu</h2>
       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         {menuItems.map((menuItem, index) => (
-          <div key={menuItem._id} className="col">
+          <div
+            key={menuItem._id}
+            className={`col ${
+              isItemOutOfStock(menuItem) ? "out-of-stock" : ""
+            }`}
+          >
             <div
-              className="card border-0 shadow"
-              style={{ minHeight: "500px", maxWidth: "400px" }}
+              className={`card border-0 shadow ${
+                isItemOutOfStock(menuItem) ? "out-of-stock" : ""
+              }`}
+              style={{
+                minHeight: "500px",
+                maxWidth: "400px",
+                filter: isItemOutOfStock(menuItem) ? "grayscale(100%)" : "none",
+              }}
             >
+              {isItemOutOfStock(menuItem) && (
+                <div
+                  className="position-absolute top-50 start-50 translate-middle text-center text-white fs-4 fw-bold"
+                  style={{
+                    transform: "rotate(-45deg)",
+                    background: "black",
+                    padding: "10px",
+                    zIndex: 1,
+                  }}
+                >
+                  Out of Stock
+                </div>
+              )}
               <div className="position-relative overflow-hidden">
                 <img
                   src={menuItem.image}
@@ -73,8 +101,14 @@ const MenuItems = ({ menuItems }) => {
                   <b>Calories:</b> {menuItem.calories} Kcal
                 </p>
                 <button
-                  className="btn btn-primary d-flex justify-content-between align-items-center"
+                  className={`btn btn-primary d-flex justify-content-between align-items-center ${
+                    isItemOutOfStock(menuItem) ? "disabled" : ""
+                  }`}
                   onClick={() => handleAddToCart(menuItem)}
+                  disabled={isItemOutOfStock(menuItem)}
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  title="Out of Stock"
                 >
                   <img src={cartIcon} alt="carticon" className="me-1" />
                   Add to Cart

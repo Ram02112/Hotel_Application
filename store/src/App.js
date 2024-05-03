@@ -281,7 +281,7 @@ function App() {
     <div>
       {renderHeader()}
       <div className="app-content">
-        <div className="app-wrapper">
+        <div className="app-wrapper" style={{ minHeight: "100vh" }}>
           <Routes>
             <Route
               path="/"

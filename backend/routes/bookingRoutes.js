@@ -1,6 +1,29 @@
 const router = require("express").Router();
 const Booking = require("../models/Booking");
 const { Customer } = require("../models/Customer");
+const schedule = require("node-schedule");
+const moment = require("moment");
+
+const deleteBookingAtTime = async (bookingId, date, startTime) => {
+  const currentDate = moment();
+  const bookingTime = moment(date).set({ hour: startTime, minute: 2 });
+
+  const delay = currentDate.isAfter(bookingTime)
+    ? 0
+    : bookingTime.diff(currentDate);
+
+  const job = schedule.scheduleJob(bookingTime.toDate(), async () => {
+    try {
+      await Booking.findByIdAndDelete(bookingId);
+    } catch (error) {
+      console.error("Error deleting booking:", error);
+    }
+  });
+
+  setTimeout(() => {
+    job.cancel();
+  }, delay);
+};
 
 router.post("/add", async (req, res) => {
   try {
@@ -9,6 +32,8 @@ router.post("/add", async (req, res) => {
     const name = req.body.name;
     const numberOfPeople = Number(req.body.numberOfPeople);
     const customerEmail = req.body.customerEmail;
+
+    const newBookings = [];
 
     for (const slot of timeSlots) {
       const existingBookingsCount = await Booking.countDocuments({
@@ -31,7 +56,6 @@ router.post("/add", async (req, res) => {
         .json({ status: false, message: "Customer not found" });
     }
 
-    const newBookings = [];
     for (const slot of timeSlots) {
       const newBooking = new Booking({
         name,
@@ -40,7 +64,11 @@ router.post("/add", async (req, res) => {
         numberOfPeople,
         customer: customer._id,
       });
-      newBookings.push(await newBooking.save());
+      const savedBooking = await newBooking.save();
+      newBookings.push(savedBooking);
+
+      const [startTime] = slot.split("-")[0].split(":");
+      deleteBookingAtTime(savedBooking._id, date, parseInt(startTime));
     }
 
     res.status(200).json({
