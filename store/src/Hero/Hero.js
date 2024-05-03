@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Image from "../assets/img/banner/3.jpg";
 import aboutImage from "../assets/img/banner/1.jpeg";
@@ -50,7 +52,7 @@ const Hero = () => {
                 Until I discovered cooking I was never really interested in
                 anything
               </h2>
-              <p className="lead">
+              <p className="fw-light">
                 Nestled in the heart of downtown, our burger restaurant beckons
                 with the tantalizing aroma of sizzling patties and freshly baked
                 buns. Step through our doors and be greeted by the warm ambiance
@@ -107,6 +109,13 @@ const Hero = () => {
             </div>
           ))}
         </div>
+      </div>
+      <div className="d-flex justify-content-center align-items-center">
+        <Link to="/menu">
+          <HashLink to="/menu#top">
+            <button className="btn btn-dark btn-lg">EXPLORE OUR MENU</button>
+          </HashLink>
+        </Link>
       </div>
     </div>
   );
