@@ -24,6 +24,15 @@ function Bookings() {
     return decodedToken.email;
   };
 
+  const handleTimeChange = (selectedTime) => {
+    const selectedHour = parseInt(selectedTime.split(":")[0]);
+    if (selectedHour < 10 || selectedHour >= 21) {
+      setTime("");
+      message.warning("Sorry, We are open only between 10AM to 9PM");
+    } else {
+      setTime(selectedTime);
+    }
+  };
   const fetchExistingBookings = async (email) => {
     try {
       const response = await axios.get(
@@ -94,6 +103,7 @@ function Bookings() {
                     required
                     className="form-control"
                     value={date}
+                    min={new Date().toISOString().split("T")[0]}
                     onChange={(e) => setDate(e.target.value)}
                   />
                 </div>
@@ -106,7 +116,9 @@ function Bookings() {
                     required
                     className="form-control"
                     value={time}
-                    onChange={(e) => setTime(e.target.value)}
+                    min="10:00"
+                    max="21:00"
+                    onChange={(e) => handleTimeChange(e.target.value)}
                   />
                 </div>
                 <br />
