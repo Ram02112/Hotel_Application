@@ -9,6 +9,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const { adminLogin } = useAdmin();
 
   const handleSubmit = (e) => {
@@ -19,11 +20,12 @@ function Login() {
         const token = res.payload.data.token;
         localStorage.setItem("adminToken", token);
         message.success(res.payload.message);
-        navigate("/admin-dashboard");
+        window.location.reload();
       } else {
         message.error(res.payload.message);
       }
     });
+    navigate("/");
   };
 
   return (

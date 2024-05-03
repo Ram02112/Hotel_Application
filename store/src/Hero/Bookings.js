@@ -20,10 +20,20 @@ function Bookings() {
 
   const getUserEmail = () => {
     const token = localStorage.getItem("customerToken");
-    const decodedToken = jwtDecode(token);
-    return decodedToken.email;
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      return decodedToken.email;
+    } else {
+      return null;
+    }
   };
+  const currentDate = new Date();
+  const currentHour = currentDate.getHours();
+  const currentMinute = currentDate.getMinutes();
 
+  const minTime = `${currentHour.toString().padStart(2, "0")}:${currentMinute
+    .toString()
+    .padStart(2, "0")}`;
   const handleTimeChange = (selectedTime) => {
     const selectedHour = parseInt(selectedTime.split(":")[0]);
     if (selectedHour < 10 || selectedHour >= 21) {
@@ -61,6 +71,9 @@ function Bookings() {
       setDate("");
       setTime("");
       setNumberOfPeople("");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
       message.error(error.response.data.message);
     }
@@ -116,7 +129,7 @@ function Bookings() {
                     required
                     className="form-control"
                     value={time}
-                    min="10:00"
+                    min={minTime}
                     max="21:00"
                     onChange={(e) => handleTimeChange(e.target.value)}
                   />

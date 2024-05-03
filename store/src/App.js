@@ -25,6 +25,7 @@ import ReportPage from "./Admin/Report";
 import Inventory from "./Admin/Inventory";
 import BookingForm from "./Hero/Bookings";
 import AdminBookings from "./Admin/AdminBookings";
+import Footer from "./Footer/Footer";
 
 function App() {
   let auth = useSelector((state) => state.customer?.auth);
@@ -41,9 +42,9 @@ function App() {
       if (res.payload.status) {
         localStorage.removeItem("customerToken");
         message.success(res.payload.message);
-        navigate("/");
       }
     });
+    navigate("/");
   };
 
   const handleAdminLogout = () => {
@@ -51,9 +52,9 @@ function App() {
       if (adminRes.payload.status) {
         localStorage.removeItem("adminToken");
         message.success(adminRes.payload.message);
-        navigate("/");
       }
     });
+    navigate("/");
   };
 
   const renderHeader = () => {
@@ -268,11 +269,6 @@ function App() {
                     <span className="lead">Register</span>
                   </Link>
                 </li>
-                <li className="nav-item">
-                  <Link to="/admin/login" className="nav-link">
-                    <span className="lead">Admin Login</span>
-                  </Link>
-                </li>
               </ul>
             </div>
           </div>
@@ -300,7 +296,7 @@ function App() {
             <Route
               path="/changePassword"
               element={
-                <Auth authRoute={true} redirectTo="/login">
+                <Auth authRoute={true} redirectTo="/">
                   <ChangePassword />
                 </Auth>
               }
@@ -308,7 +304,7 @@ function App() {
             <Route
               path="/login"
               element={
-                <Auth authRoute={true} redirectTo="/">
+                <Auth authRoute={true} redirectTo="/login">
                   <Login />
                 </Auth>
               }
@@ -316,7 +312,7 @@ function App() {
             <Route
               path="/register"
               element={
-                <Auth authRoute={true} redirectTo="/">
+                <Auth authRoute={true} redirectTo="/register">
                   <Register />
                 </Auth>
               }
@@ -324,7 +320,7 @@ function App() {
             <Route
               path="/admin/login"
               element={
-                <Auth authRoute={true} redirectTo="/">
+                <Auth authRoute={true} redirectTo="/admin/login">
                   <AdminLogin />
                 </Auth>
               }
@@ -333,7 +329,7 @@ function App() {
             <Route
               path="/admin-dashboard"
               element={
-                <Auth authRoute={true} redirectTo="/">
+                <Auth authRoute={true} redirectTo="/admin-dashboard">
                   <Admin />
                 </Auth>
               }
@@ -341,7 +337,7 @@ function App() {
             <Route
               path="/menu"
               element={
-                <Auth authRoute={true} redirectTo="/">
+                <Auth authRoute={true} redirectTo="/menu">
                   <ItemMenu />
                 </Auth>
               }
@@ -349,7 +345,7 @@ function App() {
             <Route
               path="/report"
               element={
-                <Auth authRoute={true} redirectTo="/">
+                <Auth authRoute={true} redirectTo="/report">
                   <ReportPage />
                 </Auth>
               }
@@ -357,7 +353,7 @@ function App() {
             <Route
               path="/update-menu"
               element={
-                <Auth authRoute={true} redirectTo="/">
+                <Auth authRoute={true} redirectTo="/update-menu">
                   <AdminMenu />
                 </Auth>
               }
@@ -365,7 +361,7 @@ function App() {
             <Route
               path="/cart"
               element={
-                <Auth authRoute={true} redirectTo="/">
+                <Auth authRoute={true} redirectTo="/cart">
                   <Cart />
                 </Auth>
               }
@@ -373,7 +369,7 @@ function App() {
             <Route
               path="/orderHistory"
               element={
-                <Auth authRoute={true} redirectTo="/">
+                <Auth authRoute={true} redirectTo="/orderHistory">
                   <OrderHistory />
                 </Auth>
               }
@@ -381,7 +377,7 @@ function App() {
             <Route
               path="/inventory"
               element={
-                <Auth authRoute={true} redirectTo="/">
+                <Auth authRoute={true} redirectTo="/inventory">
                   <Inventory />
                 </Auth>
               }
@@ -389,7 +385,7 @@ function App() {
             <Route
               path="/booking"
               element={
-                <Auth authRoute={true} redirectTo="/">
+                <Auth authRoute={true} redirectTo="/booking">
                   <BookingForm />
                 </Auth>
               }
@@ -397,7 +393,7 @@ function App() {
             <Route
               path="/admin/booking"
               element={
-                <Auth authRoute={true} redirectTo="/">
+                <Auth authRoute={true} redirectTo="/admin/booking">
                   <AdminBookings />
                 </Auth>
               }
@@ -405,6 +401,8 @@ function App() {
           </Routes>
         </div>
       </div>
+      <br />
+      <Footer />
     </div>
   );
 }

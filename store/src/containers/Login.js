@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useCustomers from "../_actions/customerActions";
 import { message } from "antd";
 
@@ -8,6 +8,7 @@ function Login() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { customerLogin } = useCustomers();
 
   const handleSubmit = (e) => {
@@ -18,10 +19,12 @@ function Login() {
         const token = res.payload.data.token;
         localStorage.setItem("customerToken", token);
         message.success(res.payload.message);
+        window.location.reload();
       } else {
         message.error(res.payload.message);
       }
     });
+    navigate("/");
   };
 
   return (

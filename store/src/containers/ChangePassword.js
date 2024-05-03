@@ -15,6 +15,7 @@ function ChangePassword() {
     dispatch(customerChangePassword(data)).then((res) => {
       if (res.payload.status) {
         message.success(res.payload.message);
+        window.location.reload();
       } else {
         message.error(res.payload.message);
       }

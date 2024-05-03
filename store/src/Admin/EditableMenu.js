@@ -6,7 +6,6 @@ import { message } from "antd";
 const EditableMenu = ({ menuItems }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState(null);
-  const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
     if (menuItems && menuItems.length > 0) {
@@ -39,6 +38,7 @@ const EditableMenu = ({ menuItems }) => {
       if (response.ok) {
         message.success("Menu item updated successfully");
         setShowModal(false);
+        window.location.reload();
       } else {
         message.error("Failed to update menu item");
       }
@@ -57,6 +57,7 @@ const EditableMenu = ({ menuItems }) => {
       );
       if (response.ok) {
         message.success("Menu item deleted successfully");
+        window.location.reload();
       } else {
         message.error("Failed to delete menu item");
       }
@@ -78,6 +79,7 @@ const EditableMenu = ({ menuItems }) => {
       });
       if (response.ok) {
         message.success("Out of stock status updated successfully");
+        window.location.reload();
       } else {
         message.error("Failed to update out of stock status");
       }
@@ -191,7 +193,7 @@ const EditableMenu = ({ menuItems }) => {
               <Form.Control
                 type="text"
                 placeholder="Enter image URL"
-                value={imageUrl}
+                value={selectedMenuItem ? selectedMenuItem.image : ""}
                 onChange={(e) =>
                   setSelectedMenuItem({
                     ...selectedMenuItem,
@@ -200,6 +202,7 @@ const EditableMenu = ({ menuItems }) => {
                 }
               />
             </Form.Group>
+
             <Form.Group controlId="formOutOfStock">
               <Form.Check
                 type="checkbox"
