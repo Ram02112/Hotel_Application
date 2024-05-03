@@ -40,6 +40,7 @@ app.use("/admin", require("./routes/adminRoutes"));
 app.use("/cart", require("./routes/cartRoutes"));
 app.use("/order", require("./routes/orderRoutes"));
 app.use("/booking", require("./routes/bookingRoutes"));
+app.use("/inventory", require("./routes/inventoryRoutes"));
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {

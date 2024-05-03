@@ -22,7 +22,7 @@ import webLogo from "./assets/img/hotel_logo.jpeg";
 import { sumBy } from "lodash";
 import OrderHistory from "./Hero/OrderHistory";
 import ReportPage from "./Admin/Report";
-import Inventory from "./Admin/Inventory";
+import InventoryManagement from "./Admin/Inventory";
 import BookingForm from "./Hero/Bookings";
 import AdminBookings from "./Admin/AdminBookings";
 import Footer from "./Footer/Footer";
@@ -374,14 +374,7 @@ function App() {
                 </Auth>
               }
             />
-            <Route
-              path="/inventory"
-              element={
-                <Auth authRoute={true} redirectTo="/inventory">
-                  <Inventory />
-                </Auth>
-              }
-            />
+
             <Route
               path="/booking"
               element={
@@ -395,6 +388,14 @@ function App() {
               element={
                 <Auth authRoute={true} redirectTo="/admin/booking">
                   <AdminBookings />
+                </Auth>
+              }
+            />
+            <Route
+              path="/inventory"
+              element={
+                <Auth authRoute={true} redirectTo="/inventory">
+                  <InventoryManagement />
                 </Auth>
               }
             />
