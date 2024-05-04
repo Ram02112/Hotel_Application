@@ -36,6 +36,7 @@ function AdminBookings() {
       <table className="table">
         <thead>
           <tr>
+            <th>Booking ID</th>
             <th>Name of Booking</th>
             <th>Date</th>
             <th>Time</th>
@@ -46,8 +47,8 @@ function AdminBookings() {
         <tbody>
           {bookings.map((booking) => (
             <tr key={booking._id}>
+              <td>{booking._id}</td>
               <td>{booking.name}</td>
-
               <td>{new Date(booking.date).toLocaleDateString()}</td>
               <td>{booking.time}</td>
               <td>{booking.numberOfPeople}</td>
