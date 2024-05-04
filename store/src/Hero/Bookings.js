@@ -173,6 +173,13 @@ function Bookings() {
                   <ul className="list-group">
                     {existingBookings.map((booking) => (
                       <li key={booking._id} className="list-group-item">
+                        <span>Booking ID - {booking._id}</span>
+                        <br />
+                        <span>Booking For - {booking.name}</span> <br />
+                        <span>
+                          Number of People - {booking.numberOfPeople}
+                        </span>{" "}
+                        <br />
                         <span>
                           Date - {new Date(booking.date).toLocaleDateString()}
                         </span>{" "}
