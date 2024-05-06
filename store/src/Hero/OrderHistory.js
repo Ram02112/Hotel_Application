@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import useOrders from "../_actions/orderActions";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 const OrderHistory = () => {
   const { getOrderHistory } = useOrders();
@@ -70,33 +72,55 @@ const OrderHistory = () => {
   };
 
   const renderExpandedRow = (order) => {
+    const downloadInvoice = () => {
+      const input = document.getElementById(`invoice-${order._id}`);
+      html2canvas(input).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF();
+        const imgWidth = 210;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+        pdf.save("invoice.pdf");
+      });
+    };
+
     return (
-      <table className="table table-bordered table-sm">
-        <thead>
-          <tr>
-            <th className="bg-dark text-white">Product</th>
-            <th className="text-center bg-dark text-white">Price</th>
-            <th className="text-center bg-dark text-white">Quantity</th>
-            <th className="text-center bg-dark text-white">Amount ($)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {order.orderDetails.map((item) => (
-            <tr key={item._id}>
-              <td>{item._product.name}</td>
-              <td className="text-center">${item.price.toFixed(2)}</td>
-              <td className="text-center">{item.quantity}</td>
-              <td className="text-center">${item.amount.toFixed(2)}</td>
+      <div>
+        <table
+          className="table table-bordered table-sm"
+          id={`invoice-${order._id}`}
+        >
+          <thead>
+            <tr>
+              <th className="bg-dark text-white">Order ID</th>
+              <th className="bg-dark text-white">Product</th>
+              <th className="text-center bg-dark text-white">Price</th>
+              <th className="text-center bg-dark text-white">Quantity</th>
+              <th className="text-center bg-dark text-white">Amount ($)</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {order.orderDetails.map((item) => (
+              <tr key={item._id}>
+                <td>{order._id}</td>
+                <td>{item._product.name}</td>
+                <td className="text-center">${item.price.toFixed(2)}</td>
+                <td className="text-center">{item.quantity}</td>
+                <td className="text-center">${item.amount.toFixed(2)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <button className="btn btn-success" onClick={downloadInvoice}>
+          Download Invoice
+        </button>
+      </div>
     );
   };
 
   useEffect(() => {
     getOrderHistory();
-  }, []);
+  }, [getOrderHistory]);
 
   return (
     <div style={{ padding: "20px", backgroundColor: "#f0f2f5" }}>

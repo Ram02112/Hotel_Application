@@ -26,6 +26,7 @@ import InventoryManagement from "./Admin/Inventory";
 import BookingForm from "./Hero/Bookings";
 import AdminBookings from "./Admin/AdminBookings";
 import Footer from "./Footer/Footer";
+import CateringForm from "./Hero/Catering";
 
 function App() {
   let auth = useSelector((state) => state.customer?.auth);
@@ -133,6 +134,11 @@ function App() {
                 <li className="nav-item">
                   <Link to="booking" className="nav-link">
                     Bookings
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="catering" className="nav-link">
+                    Catering
                   </Link>
                 </li>
               </ul>
@@ -396,6 +402,14 @@ function App() {
               element={
                 <Auth authRoute={true} redirectTo="/inventory">
                   <InventoryManagement />
+                </Auth>
+              }
+            />
+            <Route
+              path="/catering"
+              element={
+                <Auth authRoute={true} redirectTo="/catering">
+                  <CateringForm />
                 </Auth>
               }
             />

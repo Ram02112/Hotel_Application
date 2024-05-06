@@ -18,6 +18,7 @@ const Cart = () => {
 
   const [editItem, setEditItem] = useState(null);
   const [quantity, setQuantity] = useState(null);
+  const [couponCode, setCouponCode] = useState("");
 
   const [showResult, setShowResult] = useState(false);
 
@@ -156,16 +157,38 @@ const Cart = () => {
   const renderCheckout = () => {
     const total =
       Math.round(sumBy(cartItems, (item) => item.amount) * 100) / 100;
+
+    const applyCoupon = () => {
+      if (couponCode === "SAVE10") {
+        return Math.round(total * 0.9);
+      } else {
+        return null;
+      }
+    };
+
+    const discountedTotal = applyCoupon();
+    const displayTotal = discountedTotal !== null ? discountedTotal : total;
+
     if (cartItems?.length > 0) {
       return (
         <center>
-          <p>Total Amount : $ {total}</p>
+          <p>Total Amount : $ {total.toFixed(2)}</p>
+          {discountedTotal !== null && (
+            <p>Discounted Amount : ${discountedTotal.toFixed(2)}</p>
+          )}
+          <input
+            type="text"
+            className="form-control w-25"
+            onChange={(e) => setCouponCode(e.target.value)}
+            placeholder="Enter coupon code"
+          />
+          <br />
           <StripeCheckout
             name="payment"
             email={auth?.data?.email}
             description="Order Payment"
-            amount={total * 100}
-            token={(token) => handlePayment(token, total)}
+            amount={displayTotal * 100}
+            token={(token) => handlePayment(token, displayTotal)}
             stripeKey="pk_test_51PBA8YRqKgtFpEdWZ4ngjn5FKwzaR3wgtGgtyzBCyr8MnwBQZGdbUzmKvbEpiEWjtdDayyMsbXNGguE78tgjsI2800VOS4LBtD"
           >
             <button className="btn btn-primary">Pay Now</button>
@@ -174,6 +197,7 @@ const Cart = () => {
       );
     }
   };
+
   return (
     <div className="container mt-4">
       <h1 className="mb-4">Cart</h1>
