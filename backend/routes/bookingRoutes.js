@@ -3,6 +3,7 @@ const Booking = require("../models/Booking");
 const { Customer } = require("../models/Customer");
 const schedule = require("node-schedule");
 const moment = require("moment");
+const { auth } = require("../middlewares/auth");
 
 const deleteBookingAtTime = async (bookingId, date, startTime) => {
   const currentDate = moment();
@@ -25,7 +26,7 @@ const deleteBookingAtTime = async (bookingId, date, startTime) => {
   }, delay);
 };
 
-router.post("/add", async (req, res) => {
+router.post("/add", auth, async (req, res) => {
   try {
     const date = Date.parse(req.body.date);
     const timeSlots = req.body.time;
@@ -82,7 +83,7 @@ router.post("/add", async (req, res) => {
   }
 });
 
-router.get("/customer/:customerEmail", async (req, res) => {
+router.get("/customer/:customerEmail", auth, async (req, res) => {
   try {
     const customerEmail = req.params.customerEmail;
     const customer = await Customer.findOne({ email: customerEmail });
@@ -98,7 +99,7 @@ router.get("/customer/:customerEmail", async (req, res) => {
   }
 });
 
-router.delete("/cancelbooking/:id", async (req, res) => {
+router.delete("/cancelbooking/:id", auth, async (req, res) => {
   try {
     const { id } = req.params;
     await Booking.findByIdAndDelete(id);
@@ -109,7 +110,7 @@ router.delete("/cancelbooking/:id", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
   try {
     const bookings = await Booking.find();
     res.status(200).json(bookings);
@@ -119,7 +120,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   try {
     const deletedBooking = await Booking.findByIdAndDelete(req.params.id);
     if (!deletedBooking) {

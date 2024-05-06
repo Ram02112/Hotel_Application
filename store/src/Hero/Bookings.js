@@ -27,7 +27,18 @@ function Bookings() {
       return null;
     }
   };
-
+  axios.interceptors.request.use(
+    (config) => {
+      const token = localStorage.getItem("customerToken");
+      if (token) {
+        config.headers["Authorization"] = `Bearer ${token}`;
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
   const handleTimeChange = (selectedTime) => {
     setTime(selectedTime);
   };

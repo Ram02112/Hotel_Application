@@ -18,6 +18,18 @@ const CateringForm = () => {
   const handleTimeChange = (selectedTime) => {
     setTime(selectedTime);
   };
+  axios.interceptors.request.use(
+    (config) => {
+      const token = localStorage.getItem("customerToken");
+      if (token) {
+        config.headers["Authorization"] = `Bearer ${token}`;
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
   const generateTimeSlots = () => {
     const slots = [];
     const currentHour = new Date().getHours();
