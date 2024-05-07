@@ -27,7 +27,10 @@ const Hero = () => {
         }}
         className="d-flex justify-content-center align-items-center"
       >
-        <div className="content text-center text-light ">
+        <div
+          className="content text-center text-light "
+          style={{ transform: "translateY(210px)" }}
+        >
           <h3 className="fw-light fs-1 ">Welcome to RestCafe</h3>
           <h1 className="fw-light fs-1">Awesome delicious food Collections</h1>
         </div>

@@ -27,6 +27,8 @@ import BookingForm from "./Hero/Bookings";
 import AdminBookings from "./Admin/AdminBookings";
 import Footer from "./Footer/Footer";
 import CateringForm from "./Hero/Catering";
+import ExistingBooking from "./Hero/ExistingBooking";
+import ExistingCatering from "./Hero/ExistingCatering";
 
 function App() {
   let auth = useSelector((state) => state.customer?.auth);
@@ -64,13 +66,13 @@ function App() {
       return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <div className="container-fluid">
-            <Link to="/" className="navbar-brand">
+            <Link to="/" className="navbar-brand fw-bold fs-4">
               <img
                 src={webLogo}
                 alt=""
                 style={{
-                  height: "50px",
-                  marginRight: "5px",
+                  height: "55px",
+                  marginRight: "540%",
                   borderRadius: "50%",
                 }}
               />
@@ -131,15 +133,60 @@ function App() {
                     Order History
                   </Link>
                 </li>
-                <li className="nav-item">
-                  <Link to="booking" className="nav-link">
+                <li className="nav-item dropdown">
+                  <Link
+                    className="nav-link dropdown-toggle"
+                    href="#"
+                    id="bookingDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
                     Bookings
                   </Link>
+                  <ul
+                    className="dropdown-menu"
+                    aria-labelledby="navbarDropdown"
+                  >
+                    <li>
+                      <Link to="booking" className="dropdown-item">
+                        New Booking
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="existing-booking" className="dropdown-item">
+                        Exsisting booking
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
-                <li className="nav-item">
-                  <Link to="catering" className="nav-link">
+                <li className="nav-item dropdown">
+                  <Link
+                    className="nav-link dropdown-toggle"
+                    href="#"
+                    id="cateringDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
                     Catering
                   </Link>
+                  <ul
+                    className="dropdown-menu"
+                    aria-labelledby="cateringDropdown"
+                    style={{ right: "0", left: "auto" }}
+                  >
+                    <li>
+                      <Link to="catering" className="dropdown-item">
+                        New Catering
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="existing-catering" className="dropdown-item">
+                        Existing Catering
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
               </ul>
             </div>
@@ -151,13 +198,13 @@ function App() {
       return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <div className="container-fluid">
-            <Link to="/" className="navbar-brand">
+            <Link to="/" className="navbar-brand fs-4 fw-bold">
               <img
                 src={webLogo}
                 alt=""
                 style={{
-                  height: "50px",
-                  marginRight: "5px",
+                  height: "55px",
+                  marginRight: "540%",
                   borderRadius: "50%",
                 }}
               />
@@ -240,13 +287,13 @@ function App() {
       return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <div className="container-fluid">
-            <Link to="/" className="navbar-brand">
+            <Link to="/" className="navbar-brand fw-bold fs-4">
               <img
                 src={webLogo}
                 alt=""
                 style={{
-                  height: "50px",
-                  marginRight: "5px",
+                  height: "55px",
+                  marginRight: "540%",
                   borderRadius: "50%",
                 }}
               />
@@ -267,12 +314,12 @@ function App() {
               <ul className="navbar-nav ms-auto">
                 <li className="nav-item">
                   <Link to="/login" className="nav-link">
-                    <span className="lead">Login</span>
+                    <span className="fw-bold fs-4">Login</span>
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link to="/register" className="nav-link">
-                    <span className="lead">Register</span>
+                    <span className="fw-bold fs-4">Register</span>
                   </Link>
                 </li>
               </ul>
@@ -410,6 +457,22 @@ function App() {
               element={
                 <Auth authRoute={true} redirectTo="/catering">
                   <CateringForm />
+                </Auth>
+              }
+            />
+            <Route
+              path="existing-booking"
+              element={
+                <Auth authRoute={true} redirectTo="/existing-booking">
+                  <ExistingBooking />
+                </Auth>
+              }
+            />
+            <Route
+              path="existing-catering"
+              element={
+                <Auth authRoute={true} redirectTo="/existing-catering">
+                  <ExistingCatering />
                 </Auth>
               }
             />

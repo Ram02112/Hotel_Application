@@ -32,7 +32,7 @@ const MenuItems = ({ menuItems }) => {
   };
 
   const isItemOutOfStock = (menuItem) => {
-    return menuItem.outOfStock; // Check if the item is out of stock
+    return menuItem.outOfStock;
   };
 
   return (
