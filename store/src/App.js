@@ -25,6 +25,7 @@ import ReportPage from "./Admin/Report";
 import InventoryManagement from "./Admin/Inventory";
 import BookingForm from "./Hero/Bookings";
 import AdminBookings from "./Admin/AdminBookings";
+import AdminCatering from "./Admin/AdminCatering";
 import Footer from "./Footer/Footer";
 import CateringForm from "./Hero/Catering";
 import ExistingBooking from "./Hero/ExistingBooking";
@@ -278,6 +279,11 @@ function App() {
                     Bookings
                   </Link>
                 </li>
+                <li className="nav-item">
+                  <Link to="/admin/catering" className="nav-link">
+                    Caterings
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
@@ -441,6 +447,14 @@ function App() {
               element={
                 <Auth authRoute={true} redirectTo="/admin/booking">
                   <AdminBookings />
+                </Auth>
+              }
+            />
+            <Route
+              path="/admin/catering"
+              element={
+                <Auth authRoute={true} redirectTo="/admin/catering">
+                  <AdminCatering />
                 </Auth>
               }
             />

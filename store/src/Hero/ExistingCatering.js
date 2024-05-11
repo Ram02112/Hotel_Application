@@ -10,12 +10,14 @@ const ExistingCatering = () => {
   useEffect(() => {
     const userEmail = getUserEmail();
     setCustomerEmail(userEmail);
+    fetchExistingCatering(userEmail);
   }, []);
 
   const getUserEmail = () => {
     const token = localStorage.getItem("customerToken");
     if (token) {
       const decodedToken = jwtDecode(token);
+
       return decodedToken.email;
     } else {
       return null;
