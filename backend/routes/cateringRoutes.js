@@ -124,4 +124,26 @@ router.delete("/cancelbooking/:id", auth, async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+router.put("/editbooking/:id", auth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { cateringName, address, phoneNumber, numberOfPeople, date, time } =
+      req.body;
+    let catering = await Catering.findById(id);
+    if (!catering) {
+      return res.status(404).json({ message: "Catering booking not found" });
+    }
+    catering.cateringName = cateringName;
+    catering.address = address;
+    catering.phoneNumber = phoneNumber;
+    catering.numberOfPeople = numberOfPeople;
+    catering.date = date;
+    catering.time = time;
+    await catering.save();
+    res.status(200).json({ message: "Catering booking updated successfully" });
+  } catch (error) {
+    console.error("Error updating catering booking:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 module.exports = router;

@@ -136,5 +136,37 @@ router.delete("/:id", auth, async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+router.put("/:id", auth, async (req, res) => {
+  const { id } = req.params;
+  const { name, date, time, numberOfPeople } = req.body;
 
+  try {
+    // Ensure time is a string
+    const timeString = typeof time === "string" ? time : time[0];
+    const updatedBooking = await Booking.findByIdAndUpdate(
+      id,
+      { name, date, time: timeString, numberOfPeople },
+      { new: true } // To return the updated document
+    );
+
+    if (!updatedBooking) {
+      return res
+        .status(404)
+        .json({ status: false, message: "Booking not found" });
+    }
+
+    // Handle deletion and rescheduling if necessary
+    const [startTime] = timeString.split("-")[0].split(":");
+    deleteBookingAtTime(updatedBooking._id, date, parseInt(startTime));
+
+    res.status(200).json({
+      status: true,
+      message: "Booking updated successfully",
+      updatedBooking,
+    });
+  } catch (error) {
+    console.error("Error updating booking:", error);
+    res.status(500).json({ status: false, message: "Internal Server Error" });
+  }
+});
 module.exports = router;
