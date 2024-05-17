@@ -24,7 +24,6 @@ const InventoryManagement = ({ fetchInventory }) => {
         price: "",
         quantity: "",
       });
-      fetchInventory();
     } catch (error) {
       setError("Error adding inventory: " + error.message);
     } finally {
