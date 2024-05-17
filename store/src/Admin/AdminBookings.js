@@ -152,7 +152,7 @@ const AdminBookings = () => {
       </div>
 
       <Modal
-        visible={editModalVisible}
+        open={editModalVisible}
         title="Edit Booking"
         onCancel={handleCancelEdit}
         footer={[
