@@ -63,17 +63,17 @@ export default function useCart() {
     };
   };
 
-  const getCartItems = () => {
-    const result = axios
-      .get("http://localhost:4000/cart", config)
-      .then((res) => {
-        return res.data;
-      })
-      .catch((err) => err.response.data);
-    dispatch({
-      type: GET_CART_ITEM,
-      payload: result,
-    });
+  const getCartItems = () => async (dispatch) => {
+    try {
+      const res = await axios.get("http://localhost:4000/cart", config);
+
+      dispatch({
+        type: GET_CART_ITEM,
+        payload: res.data,
+      });
+    } catch (err) {
+      console.error("Error getting cart items:", err);
+    }
   };
 
   const clearCart = () => {

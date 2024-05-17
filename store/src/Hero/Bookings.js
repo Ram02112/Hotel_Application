@@ -77,14 +77,16 @@ function Bookings() {
 
   return (
     <div className="container mt-5">
-      <div className="row">
+      <div className="row justify-content-center">
         <div className="col-md-6">
-          <div className="card">
+          <div className="card shadow-lg">
             <div className="card-body">
-              <h3 className="card-title mb-4">Make a Booking</h3>
+              <h3 className="card-title text-center mb-4">Make a Booking</h3>
               <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label htmlFor="name">Booking Name:</label>
+                <div className="mb-3">
+                  <label htmlFor="name" className="form-label">
+                    Booking Name
+                  </label>
                   <input
                     type="text"
                     id="name"
@@ -93,7 +95,11 @@ function Bookings() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
-                  <label htmlFor="date">Date:</label>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="date" className="form-label">
+                    Date
+                  </label>
                   <input
                     type="date"
                     id="date"
@@ -104,9 +110,10 @@ function Bookings() {
                     onChange={(e) => setDate(e.target.value)}
                   />
                 </div>
-                <br />
-                <div className="form-group">
-                  <label htmlFor="time">Time:</label>
+                <div className="mb-3">
+                  <label htmlFor="time" className="form-label">
+                    Time
+                  </label>
                   <select
                     id="time"
                     required
@@ -116,19 +123,16 @@ function Bookings() {
                   >
                     <option value="">Select a time slot</option>
                     {generateTimeSlots().map((slot, index) => (
-                      <option
-                        key={index}
-                        value={slot}
-                        className="list-group-item"
-                      >
+                      <option key={index} value={slot}>
                         {slot}
                       </option>
                     ))}
                   </select>
                 </div>
-                <br />
-                <div className="form-group">
-                  <label htmlFor="numberOfPeople">Number of People:</label>
+                <div className="mb-3">
+                  <label htmlFor="numberOfPeople" className="form-label">
+                    Number of People
+                  </label>
                   <input
                     type="number"
                     id="numberOfPeople"
@@ -140,8 +144,10 @@ function Bookings() {
                     min="1"
                   />
                 </div>
-                <br />
-                <button type="submit" className="btn btn-primary">
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-lg btn-block"
+                >
                   Book Now
                 </button>
               </form>

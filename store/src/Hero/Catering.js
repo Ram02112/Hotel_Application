@@ -84,88 +84,111 @@ const CateringForm = () => {
 
   return (
     <div className="container mt-5">
-      <div className="row">
+      <div className="row justify-content-center">
         <div className="col-md-6">
-          <h2>Book Catering</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label className="form-label">Catering Name:</label>
-              <input
-                type="text"
-                name="cateringName"
-                value={cateringData.cateringName}
-                onChange={handleChange}
-                className="form-control"
-                required
-              />
+          <div className="card shadow-lg">
+            <div className="card-body">
+              <h3 className="card-title text-center mb-4">Book Catering</h3>
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label htmlFor="cateringName" className="form-label">
+                    Catering Name:
+                  </label>
+                  <input
+                    type="text"
+                    id="cateringName"
+                    name="cateringName"
+                    value={cateringData.cateringName}
+                    onChange={handleChange}
+                    className="form-control"
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="date" className="form-label">
+                    Date:
+                  </label>
+                  <input
+                    type="date"
+                    id="date"
+                    required
+                    className="form-control"
+                    value={date}
+                    min={new Date().toISOString().split("T")[0]}
+                    onChange={(e) => setDate(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="time" className="form-label">
+                    Time:
+                  </label>
+                  <select
+                    id="time"
+                    required
+                    className="form-select"
+                    value={time}
+                    onChange={(e) => handleTimeChange(e.target.value)}
+                  >
+                    <option value="">Select a time slot</option>
+                    {generateTimeSlots().map((slot, index) => (
+                      <option key={index} value={slot}>
+                        {slot}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="address" className="form-label">
+                    Address:
+                  </label>
+                  <input
+                    type="text"
+                    id="address"
+                    name="address"
+                    value={cateringData.address}
+                    onChange={handleChange}
+                    className="form-control"
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="phoneNumber" className="form-label">
+                    Phone Number:
+                  </label>
+                  <input
+                    type="text"
+                    id="phoneNumber"
+                    name="phoneNumber"
+                    value={cateringData.phoneNumber}
+                    onChange={handleChange}
+                    className="form-control"
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="numberOfPeople" className="form-label">
+                    Number of People:
+                  </label>
+                  <input
+                    type="number"
+                    id="numberOfPeople"
+                    name="numberOfPeople"
+                    value={cateringData.numberOfPeople}
+                    onChange={handleChange}
+                    className="form-control"
+                    required
+                    max="300"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-lg btn-block"
+                >
+                  Book Catering
+                </button>
+              </form>
             </div>
-            <div className="mb-3">
-              <label htmlFor="date">Date:</label>
-              <input
-                type="date"
-                id="date"
-                required
-                className="form-control"
-                value={date}
-                min={new Date().toISOString().split("T")[0]}
-                onChange={(e) => setDate(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="time">Time:</label>
-              <select
-                id="time"
-                required
-                className="form-select"
-                value={time}
-                onChange={(e) => handleTimeChange(e.target.value)}
-              >
-                <option value="">Select a time slot</option>
-                {generateTimeSlots().map((slot, index) => (
-                  <option key={index} value={slot} className="list-group-item">
-                    {slot}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="mb-3">
-              <label className="form-label">Address:</label>
-              <input
-                type="text"
-                name="address"
-                value={cateringData.address}
-                onChange={handleChange}
-                className="form-control"
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label className="form-label">Phone Number:</label>
-              <input
-                type="text"
-                name="phoneNumber"
-                value={cateringData.phoneNumber}
-                onChange={handleChange}
-                className="form-control"
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label className="form-label">Number of People:</label>
-              <input
-                type="number"
-                name="numberOfPeople"
-                value={cateringData.numberOfPeople}
-                onChange={handleChange}
-                className="form-control"
-                required
-                max="300"
-              />
-            </div>
-            <button type="submit" className="btn btn-primary">
-              Book Catering
-            </button>
-          </form>
+          </div>
         </div>
       </div>
     </div>

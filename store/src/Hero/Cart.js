@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import useCart from "../_actions/cartActions";
 import { message } from "antd";
@@ -9,7 +9,8 @@ import useOrders from "../_actions/orderActions";
 import OrderResult from "./OrderResult";
 const Cart = () => {
   const dispatch = useDispatch();
-  const { updateCartItems, deleteCartItems, clearCart } = useCart();
+  const { getCartItems, updateCartItems, deleteCartItems, clearCart } =
+    useCart();
 
   const { checkout } = useOrders();
   const cartItems = useSelector((state) => state.cart.cartItems?.cartDetails);
@@ -21,7 +22,11 @@ const Cart = () => {
   const [couponCode, setCouponCode] = useState("");
 
   const [showResult, setShowResult] = useState(false);
-
+  useEffect(() => {
+    if (auth) {
+      dispatch(getCartItems());
+    }
+  }, []);
   const handleEdit = (item) => {
     setEditItem(item);
     setQuantity(item.quantity);

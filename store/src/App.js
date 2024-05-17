@@ -30,7 +30,7 @@ import Footer from "./Footer/Footer";
 import CateringForm from "./Hero/Catering";
 import ExistingBooking from "./Hero/ExistingBooking";
 import ExistingCatering from "./Hero/ExistingCatering";
-
+import EditInventory from "./Admin/EditInventory";
 function App() {
   let auth = useSelector((state) => state.customer?.auth);
   let adminAuth = useSelector((state) => state.admin?.adminAuth);
@@ -264,10 +264,33 @@ function App() {
                     Update Menu
                   </Link>
                 </li>
-                <li className="nav-item">
-                  <Link to="/inventory" className="nav-link">
+                <li className="nav-item dropdown">
+                  <Link
+                    className="nav-link dropdown-toggle"
+                    href="#"
+                    id="inventoryDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
                     Inventory
                   </Link>
+                  <ul
+                    className="dropdown-menu"
+                    aria-labelledby="cateringDropdown"
+                    style={{ right: "0", left: "auto" }}
+                  >
+                    <li>
+                      <Link to="inventory" className="dropdown-item">
+                        Add items to Inventory
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="editinventory" className="dropdown-item">
+                        Update Inventory
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
                 <li className="nav-item">
                   <Link to="/report" className="nav-link">
@@ -487,6 +510,14 @@ function App() {
               element={
                 <Auth authRoute={true} redirectTo="/existing-catering">
                   <ExistingCatering />
+                </Auth>
+              }
+            />
+            <Route
+              path="editinventory"
+              element={
+                <Auth authRoute={true} redirectTo="/editinventory">
+                  <EditInventory />
                 </Auth>
               }
             />

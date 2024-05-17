@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { message } from "antd";
-
+import { BsTrash } from "react-icons/bs";
 function AdminBookings() {
   const [bookings, setBookings] = useState([]);
   const [error, setError] = useState("");
@@ -42,43 +42,51 @@ function AdminBookings() {
 
   return (
     <div className="container mt-5">
-      <h2>Admin Bookings</h2>
-      {error && <div className="alert alert-danger">{error}</div>}
-      {bookings.length > 0 ? (
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Booking ID</th>
-              <th>Name of Booking</th>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Number of People</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {bookings.map((booking) => (
-              <tr key={booking._id}>
-                <td>{booking._id}</td>
-                <td>{booking.name}</td>
-                <td>{new Date(booking.date).toLocaleDateString()}</td>
-                <td>{booking.time.join(", ")}</td>
-                <td>{booking.numberOfPeople}</td>
-                <td>
-                  <button
-                    className="btn btn-danger btn-sm"
-                    onClick={() => handleDeleteBooking(booking._id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <div className="alert alert-info">No bookings available</div>
-      )}
+      <div className="card">
+        <h2 className="card-header bg-dark text-white text-center">
+          Admin Bookings
+        </h2>
+        <div className="card-body">
+          {error && <div className="alert alert-danger">{error}</div>}
+          {bookings.length > 0 ? (
+            <div className="table-responsive">
+              <table className="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">Booking ID</th>
+                    <th scope="col">Name of Booking</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Number of People</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bookings.map((booking) => (
+                    <tr key={booking._id}>
+                      <td>{booking._id}</td>
+                      <td>{booking.name}</td>
+                      <td>{new Date(booking.date).toLocaleDateString()}</td>
+                      <td>{booking.time.join(", ")}</td>
+                      <td>{booking.numberOfPeople}</td>
+                      <td>
+                        <button
+                          className="btn btn-danger btn-sm"
+                          onClick={() => handleDeleteBooking(booking._id)}
+                        >
+                          <BsTrash /> Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="alert alert-info">No bookings available</div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

@@ -42,73 +42,84 @@ const AddMenuItemForm = () => {
   };
 
   return (
-    <div>
-      <h2>Add New Menu Item</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="name" className="form-label">
-            Name
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+    <div className="container mt-5">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <div className="card shadow">
+            <div className="card-body">
+              <h2 className="card-title text-center mb-4">Add New Menu Item</h2>
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label htmlFor="name" className="form-label">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="description" className="form-label">
+                    Ingredients
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="calories" className="form-label">
+                    Calories
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="calories"
+                    value={calories}
+                    onChange={(e) => setCalories(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="price" className="form-label">
+                    Price
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="price"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="imageURL" className="form-label">
+                    Image URL
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="imageURL"
+                    value={imageURL}
+                    onChange={(e) => setImageURL(e.target.value)}
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-lg btn-block"
+                >
+                  Add Item
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
-        <div className="mb-3">
-          <label htmlFor="description" className="form-label">
-            Ingredients
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="description" className="form-label">
-            Calories
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="description"
-            value={calories}
-            onChange={(e) => setCalories(e.target.value)}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="price" className="form-label">
-            Price
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="price"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="imageURL" className="form-label">
-            Image URL
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="imageURL"
-            value={imageURL}
-            onChange={(e) => setImageURL(e.target.value)}
-          />
-        </div>
-        <button type="submit" className="btn btn-primary">
-          Add Item
-        </button>
-      </form>
+      </div>
     </div>
   );
 };
