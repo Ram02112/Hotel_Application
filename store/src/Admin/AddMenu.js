@@ -32,12 +32,20 @@ const AddMenuItemForm = () => {
         setPrice("");
         setImageURL("");
         const res = await response.json();
-        message.success(res.message);
+        message.success({ response: res.message, duration: 3 });
       } else {
-        message.error("Failed to add menu item:", response.statusText);
+        message.warning({
+          content: "Failed to add menu item",
+          duration: 3,
+          response: response.statusText,
+        });
       }
     } catch (error) {
-      message.error("Error adding menu item:", error);
+      message.warning({
+        content: "Error adding menu item",
+        response: error,
+        duration: 3,
+      });
     }
   };
 

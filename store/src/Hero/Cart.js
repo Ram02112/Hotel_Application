@@ -43,10 +43,10 @@ const Cart = () => {
     };
     dispatch(updateCartItems(data)).then((res) => {
       if (res.payload.status) {
-        message.success(res.payload.message);
+        message.success({ response: res.payload.message, duration: 3 });
         setEditItem(null);
       } else {
-        message.error(res.payload.message);
+        message.error({ response: res.payload.message, duration: 3 });
       }
     });
   };
@@ -54,9 +54,9 @@ const Cart = () => {
   const handleDelete = (item) => {
     dispatch(deleteCartItems(item._product._id)).then((res) => {
       if (res.payload.status) {
-        message.success(res.payload.message);
+        message.success({ response: res.payload.message, duration: 3 });
       } else {
-        message.error(res.payload.message);
+        message.error({ response: res.payload.message, duration: 3 });
       }
     });
   };
@@ -67,7 +67,7 @@ const Cart = () => {
         clearCart();
         setShowResult(true);
       } else {
-        message.error(res.payload.message);
+        message.error({ response: res.payload.message, duration: 3 });
       }
     });
   };

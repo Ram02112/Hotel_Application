@@ -55,10 +55,10 @@ const ExistingBooking = () => {
       const response = await axios.delete(
         `http://localhost:4000/booking/cancelbooking/${id}`
       );
-      message.success(response.data.message);
+      message.success({ response: response.data.message, duration: 3 });
       fetchExistingBookings(customerEmail);
     } catch (error) {
-      message.error("Error deleting booking");
+      message.error({ content: "Error deleting booking", duration: 3 });
     }
   };
   const handleEditBooking = (booking) => {
@@ -85,11 +85,11 @@ const ExistingBooking = () => {
         `http://localhost:4000/booking/${currentBooking._id}`,
         updatedBooking
       );
-      message.success("Booking updated successfully");
+      message.success({ content: "Booking updated successfully", duration: 3 });
       setEditModalVisible(false);
       fetchExistingBookings(customerEmail);
     } catch (error) {
-      message.error("Error updating booking");
+      message.error({ content: "Error updating booking", duration: 3 });
     }
   };
 

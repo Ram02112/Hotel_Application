@@ -36,14 +36,21 @@ const EditableMenu = ({ menuItems }) => {
       );
 
       if (response.ok) {
-        message.success("Menu item updated successfully");
+        message.success({
+          content: "Menu item updated successfully",
+          duration: 3,
+        });
         setShowModal(false);
         window.location.reload();
       } else {
-        message.error("Failed to update menu item");
+        message.warning({ content: "Failed to update menu item", duration: 3 });
       }
     } catch (error) {
-      message.error("Error updating menu item:", error);
+      message.warning({
+        content: "Error updating menu item:",
+        duration: 3,
+        error,
+      });
     }
   };
 
@@ -66,28 +73,6 @@ const EditableMenu = ({ menuItems }) => {
     }
   };
 
-  const handleOutOfStockChange = async (id, checked) => {
-    try {
-      const response = await fetch(`http://localhost:4000/update/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          outOfStock: checked,
-        }),
-      });
-      if (response.ok) {
-        message.success("Out of stock status updated successfully");
-        window.location.reload();
-      } else {
-        message.error("Failed to update out of stock status");
-      }
-    } catch (error) {
-      message.error("Error updating out of stock status:", error);
-    }
-  };
-
   return (
     <div className="container">
       <table className="table table-bordered table-striped">
@@ -107,7 +92,7 @@ const EditableMenu = ({ menuItems }) => {
               <td>${menuItem.price.toFixed(2)}</td>
               <td>{menuItem.description}</td>
               <td>{menuItem.calories}</td>
-              <td>
+              <td style={{ width: "150px" }}>
                 <button
                   className="btn btn-primary btn-sm me-1"
                   onClick={() => handleEdit(menuItem)}
@@ -120,19 +105,9 @@ const EditableMenu = ({ menuItems }) => {
                 >
                   Delete
                 </button>
-                <input
-                  type="checkbox"
-                  checked={menuItem.outOfStock}
-                  onChange={() => handleOutOfStockChange(menuItem._id)}
-                  className="form-check-input d-none"
-                  id={`outOfStockCheckbox-${menuItem._id}`}
-                />
-                <label
-                  htmlFor={`outOfStockCheckbox-${menuItem._id}`}
-                  className="ms-2"
-                >
-                  Out of Stock
-                </label>
+                {menuItem.outOfStock && (
+                  <span className="ms-2 text-danger">Out of Stock</span>
+                )}
               </td>
             </tr>
           ))}

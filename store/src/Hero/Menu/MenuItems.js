@@ -17,9 +17,9 @@ const MenuItems = ({ menuItems }) => {
     };
     dispatch(addToCart(data)).then((res) => {
       if (res.payload.status) {
-        message.success(res.payload.message);
+        message.success({ response: res.payload.message, duration: 3 });
       } else {
-        message.error(res.payload.message);
+        message.error({ response: res.payload.message, duaration: 3 });
       }
     });
   };

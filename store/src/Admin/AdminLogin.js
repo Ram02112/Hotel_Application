@@ -19,10 +19,10 @@ function Login() {
       if (res.payload.status) {
         const token = res.payload.data.token;
         localStorage.setItem("adminToken", token);
-        message.success(res.payload.message);
+        message.success({ response: res.payload.message, duration: 3 });
         window.location.reload();
       } else {
-        message.error(res.payload.message);
+        message.error({ response: res.payload.message, duration: 3 });
       }
     });
     navigate("/");

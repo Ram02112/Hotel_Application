@@ -17,20 +17,20 @@ function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!agreement) {
-      message.warning("Please accept the agreement");
+      message.warning({ content: "Please accept the agreement", duration: 3 });
       return;
     }
     const data = { firstName, lastName, email, password };
     dispatch(adminRegister(data))
       .then((res) => {
         if (res.payload.status) {
-          message.success(res.payload.message);
+          message.success({ response: res.payload.message, duration: 3 });
         } else {
-          message.error(res.payload.message);
+          message.error({ response: res.payload.message, duration: 3 });
         }
       })
       .catch((error) => {
-        message.error("Error:", error);
+        message.error({ content: "Error", duration: 3, error });
       });
   };
 

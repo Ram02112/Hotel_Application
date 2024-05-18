@@ -42,10 +42,10 @@ const AdminBookings = () => {
   const handleDeleteBooking = async (id) => {
     try {
       await axios.delete(`http://localhost:4000/booking/${id}`);
-      message.success("Booking deleted successfully");
+      message.success({ content: "Booking deleted successfully", duration: 3 });
       fetchBookings();
     } catch (error) {
-      message.error("Error deleting booking");
+      message.error({ content: "Error deleting booking", duration: 3 });
     }
   };
 
@@ -73,11 +73,11 @@ const AdminBookings = () => {
         `http://localhost:4000/booking/${currentBooking._id}`,
         updatedBooking
       );
-      message.success("Booking updated successfully");
+      message.success({ content: "Booking updated successfully", duration: 3 });
       setEditModalVisible(false);
       fetchBookings();
     } catch (error) {
-      message.error("Error updating booking");
+      message.error({ content: "Error updating booking", duration: 3 });
     }
   };
 

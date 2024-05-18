@@ -17,10 +17,14 @@ const ItemMenu = () => {
 
         setMenuItems(data);
       } else {
-        message.error("Failed to fetch menu items");
+        message.error({ content: "Failed to fetch menu items", duration: 3 });
       }
     } catch (error) {
-      message.error("Error fetching menu items:", error);
+      message.error({
+        content: "Error fetching menu items",
+        duration: 3,
+        error,
+      });
     }
   };
   return (

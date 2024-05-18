@@ -43,10 +43,10 @@ const ExistingCatering = () => {
       const response = await axios.delete(
         `http://localhost:4000/catering/cancelbooking/${id}`
       );
-      message.success(response.data.message);
+      message.success({ response: response.data.message, duration: 3 });
       fetchExistingCatering(customerEmail);
     } catch (error) {
-      message.error("Error deleting booking");
+      message.error({ content: "Error deleting booking", duration: 3 });
     }
   };
   const handleEditCatering = (catering) => {
@@ -86,11 +86,14 @@ const ExistingCatering = () => {
         `http://localhost:4000/catering/editbooking/${currentCatering._id}`,
         updatedCatering
       );
-      message.success("Catering updated successfully");
+      message.success({
+        content: "Catering updated successfully",
+        duration: 3,
+      });
       setEditModalVisible(false);
       fetchExistingCatering(customerEmail);
     } catch (error) {
-      message.error("Error updating catering");
+      message.error({ content: "Error updating catering", duration: 3 });
     }
   };
   const handleCancelEdit = () => {

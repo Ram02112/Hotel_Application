@@ -45,7 +45,7 @@ function App() {
     dispatch(customerLogout()).then((res) => {
       if (res.payload.status) {
         localStorage.removeItem("customerToken");
-        message.success(res.payload.message);
+        message.success({ response: res.payload.message, duration: 3 });
       }
     });
     navigate("/");
@@ -55,7 +55,7 @@ function App() {
     dispatch(adminLogout()).then((adminRes) => {
       if (adminRes.payload.status) {
         localStorage.removeItem("adminToken");
-        message.success(adminRes.payload.message);
+        message.success({ response: adminRes.payload.message, duration: 3 });
       }
     });
     navigate("/");

@@ -72,13 +72,12 @@ const CateringForm = () => {
           time: [time],
         }
       );
-      message.success(response.data.message);
+      message.success({ response: response.data.message, duration: 3 });
       setTimeout(() => {
         window.location.reload();
       }, 1000);
     } catch (error) {
-      message.error(error.response.data.message);
-      console.log(error);
+      message.error({ response: error.response.data.message, duration: 3 });
     }
   };
 

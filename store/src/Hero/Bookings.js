@@ -50,24 +50,22 @@ function Bookings() {
         time: [time],
         numberOfPeople,
       });
-      message.success(response.data.message);
+      message.success({ response: response.data.message, duration: 3 });
 
       setName("");
       setDate("");
       setTime("");
       setNumberOfPeople("");
     } catch (error) {
-      message.error(error.response.data.message);
+      message.error({ response: error.response.data.message, duration: 3 });
     }
   };
 
-  // Generate time slots from 10 AM to 9 PM
   const generateTimeSlots = () => {
     const slots = [];
     const currentHour = new Date().getHours();
 
     for (let i = 10; i <= 21; i++) {
-      // Check if the time slot is in the future (after the current hour)
       if (i > currentHour) {
         slots.push(`${i}:00 - ${i + 1}:00`);
       }

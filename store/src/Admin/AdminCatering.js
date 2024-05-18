@@ -46,10 +46,13 @@ const AdminCatering = () => {
   const handleDeleteCatering = async (id) => {
     try {
       await axios.delete(`http://localhost:4000/catering/cancelbooking/${id}`);
-      message.success("Catering deleted successfully");
+      message.success({
+        content: "Catering deleted successfully",
+        duration: 3,
+      });
       fetchCaterings();
     } catch (error) {
-      message.error("Error deleting catering");
+      message.error({ content: "Error deleting catering", duration: 3 });
     }
   };
 
@@ -81,11 +84,14 @@ const AdminCatering = () => {
         `http://localhost:4000/catering/editbooking/${currentCatering._id}`,
         updatedCatering
       );
-      message.success("Catering updated successfully");
+      message.success({
+        content: "Catering updated successfully",
+        duration: 3,
+      });
       setEditModalVisible(false);
       fetchCaterings();
     } catch (error) {
-      message.error("Error updating catering");
+      message.error({ content: "Error updating catering", duration: 3 });
     }
   };
 
