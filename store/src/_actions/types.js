@@ -23,3 +23,8 @@ export const CLEAR_CART_ITEM = "CLEAR_CART_ITEM";
 
 export const CHECKOUT = "CHECKOUT";
 export const GET_ORDER_HISTORY = "GET_ORDER_HISTORY";
+
+export const STAFF_AUTH = "STAFF_AUTH";
+export const STAFF_LOGIN = "STAFF_LOGIN";
+export const STAFF_LOGOUT = "STAFF_LOGOUT";
+export const STAFF_REGISTER = "STAFF_REGISTER";

@@ -11,6 +11,7 @@ const tokenSchema = Schema({
     ref: "customers",
   },
   _adminId: { type: Schema.Types.ObjectId, required: true },
+  _staffId: { type: Schema.Types.ObjectId, required: true },
   tokenType: {
     type: String,
     enum: ["login", "resetPassword"],

@@ -26,8 +26,11 @@ const orderDetailsSchema = mongoose.Schema(
 const orderSchema = mongoose.Schema({
   _customerId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "customers",
+    ref: "customers", // Reference to the customers collection
     required: true,
+  },
+  customerName: {
+    type: String, // Store the customer name directly in the order document
   },
   orderDetails: [
     {
@@ -46,8 +49,21 @@ const orderSchema = mongoose.Schema({
   },
 });
 
-const Order = mongoose.model("orders", orderSchema);
+orderSchema.pre("save", async function (next) {
+  try {
+    const customer = await mongoose
+      .model("customers")
+      .findById(this._customerId);
+    if (customer) {
+      this.customerName = customer.name;
+    }
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 
+const Order = mongoose.model("orders", orderSchema);
 const OrderDetails = mongoose.model("orderDetails", orderDetailsSchema);
 
 module.exports = { OrderDetails, Order };

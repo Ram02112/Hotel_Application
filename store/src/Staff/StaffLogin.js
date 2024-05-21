@@ -1,28 +1,28 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import useAdmin from "../_actions/adminActions";
+import useStaff from "../_actions/staffActions";
 import { message } from "antd";
 
-function Login() {
+function StaffLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { adminLogin } = useAdmin();
+  const { staffLogin } = useStaff();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = { email, password };
-    dispatch(adminLogin(formData)).then((res) => {
+    dispatch(staffLogin(formData)).then((res) => {
       if (res.payload.status) {
         const token = res.payload.data.token;
-        localStorage.setItem("adminToken", token);
-        message.success({ content: "Login successful", duration: 3 });
+        localStorage.setItem("staffToken", token);
+        message.success(res.payload.message);
         window.location.reload();
       } else {
-        message.error({ content: "Login failed", duration: 3 });
+        message.error(res.payload.message);
       }
     });
     navigate("/");
@@ -34,7 +34,7 @@ function Login() {
         <div className="col-xs-12 col-sm-8 col-md-6">
           <div className="card shadow-sm">
             <div className="card-body">
-              <h2 className="card-title mb-4">Admin Login</h2>
+              <h2 className="card-title mb-4">Staff Login</h2>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">
@@ -78,4 +78,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default StaffLogin;

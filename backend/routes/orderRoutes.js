@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const stripe = require("stripe")(process.env.STRIPE_S_KEY);
-
+const { Customer } = require("../models/Customer");
 const { Order } = require("../models/Order");
 
 const { Cart } = require("../models/Cart");
@@ -98,5 +98,39 @@ router.get("/report", auth, (req, res) => {
       });
     });
 });
-
+router.get("/allOrders", auth, (req, res) => {
+  Order.find()
+    .sort({ orderDate: "desc" })
+    .exec((err, orders) => {
+      if (err) {
+        return res.status(400).json({
+          status: false,
+          err,
+        });
+      }
+      const ordersWithCustomerName = orders.map(async (order) => {
+        const customer = await Customer.findById(order._customerId);
+        const customerName = customer ? customer.name : "N/A";
+        return {
+          ...order.toObject(),
+          customerName,
+        };
+      });
+      Promise.all(ordersWithCustomerName)
+        .then((data) => {
+          res.status(200).json({
+            status: true,
+            message: "All orders retrieved successfully",
+            data,
+          });
+        })
+        .catch((error) => {
+          res.status(500).json({
+            status: false,
+            message: "Error retrieving orders with customer names",
+            error,
+          });
+        });
+    });
+});
 module.exports = router;

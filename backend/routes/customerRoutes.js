@@ -27,7 +27,14 @@ router.post("/register", (req, res) => {
               data: undefined,
             });
           } else {
-            const customer = new Customer({ ...req.body, password: hash });
+            const { firstName, lastName, email, isStudent } = req.body;
+            const customer = new Customer({
+              firstName,
+              lastName,
+              email,
+              password: hash,
+              isStudent,
+            });
             customer.save((err, doc) => {
               if (err)
                 return res.json({
@@ -300,6 +307,20 @@ router.put("/changePassword", auth, async (req, res) => {
         });
       }
     });
+  }
+});
+
+router.get("/:customerId", async (req, res) => {
+  try {
+    const customerId = req.params.customerId;
+    const customer = await Customer.findById(customerId);
+    if (!customer) {
+      return res.status(404).json({ message: "Customer not found" });
+    }
+    res.status(200).json({ customer });
+  } catch (error) {
+    console.error("Error fetching customer details:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 

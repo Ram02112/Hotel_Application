@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-
-const customSchema = Schema({
+const staffSchema = new mongoose.Schema({
   firstName: {
     type: String,
     maxLength: 50,
@@ -19,10 +17,8 @@ const customSchema = Schema({
     type: String,
     minLength: 6,
   },
-  isStudent: {
-    type: Boolean,
-  },
 });
 
-const Customer = mongoose.model("customers", customSchema);
-module.exports = { Customer };
+const Staff = mongoose.model("Staff", staffSchema);
+
+module.exports = { Staff };

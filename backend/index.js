@@ -42,7 +42,7 @@ app.use("/order", require("./routes/orderRoutes"));
 app.use("/booking", require("./routes/bookingRoutes"));
 app.use("/inventory", require("./routes/inventoryRoutes"));
 app.use("/catering", require("./routes/cateringRoutes"));
-
+app.use("/staff", require("./routes/staffRoutes"));
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

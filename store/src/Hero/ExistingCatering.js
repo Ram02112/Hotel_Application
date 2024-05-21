@@ -43,7 +43,7 @@ const ExistingCatering = () => {
       const response = await axios.delete(
         `http://localhost:4000/catering/cancelbooking/${id}`
       );
-      message.success({ response: response.data.message, duration: 3 });
+      message.success(response.data.message);
       fetchExistingCatering(customerEmail);
     } catch (error) {
       message.error({ content: "Error deleting booking", duration: 3 });

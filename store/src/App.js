@@ -10,6 +10,7 @@ import Register from "./containers/Register";
 import ResetPassword from "./containers/ResetPassword";
 import useCustomers from "./_actions/customerActions";
 import useAdmin from "./_actions/adminActions";
+import useStaff from "./_actions/staffActions";
 import AdminLogin from "./Admin/AdminLogin";
 import AdminSignupForm from "./Admin/AdminSignup";
 import Admin from "./Admin/Admin";
@@ -31,12 +32,17 @@ import CateringForm from "./Hero/Catering";
 import ExistingBooking from "./Hero/ExistingBooking";
 import ExistingCatering from "./Hero/ExistingCatering";
 import EditInventory from "./Admin/EditInventory";
+import StaffSignup from "./Staff/StaffSignup";
+import StaffLogin from "./Staff/StaffLogin";
+import AllOrders from "./Staff/Orders";
 function App() {
   let auth = useSelector((state) => state.customer?.auth);
   let adminAuth = useSelector((state) => state.admin?.adminAuth);
+  let staffAuth = useSelector((state) => state.staff?.staffAuth);
   const cartItems = useSelector((state) => state.cart.cartItems?.cartDetails);
   const { customerLogout } = useCustomers();
   const { adminLogout } = useAdmin();
+  const { staffLogout } = useStaff();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const itemCount = sumBy(cartItems, (item) => item?.quantity);
@@ -45,7 +51,7 @@ function App() {
     dispatch(customerLogout()).then((res) => {
       if (res.payload.status) {
         localStorage.removeItem("customerToken");
-        message.success({ response: res.payload.message, duration: 3 });
+        message.success({ content: "Logout Successful", duration: 3 });
       }
     });
     navigate("/");
@@ -55,7 +61,16 @@ function App() {
     dispatch(adminLogout()).then((adminRes) => {
       if (adminRes.payload.status) {
         localStorage.removeItem("adminToken");
-        message.success({ response: adminRes.payload.message, duration: 3 });
+        message.success({ content: "Logout Successful", duration: 3 });
+      }
+    });
+    navigate("/");
+  };
+  const handlestaffLogout = () => {
+    dispatch(staffLogout()).then((staffRes) => {
+      if (staffRes.payload.status) {
+        localStorage.removeItem("staffToken");
+        message.success({ content: "Logout Successful", duration: 3 });
       }
     });
     navigate("/");
@@ -312,6 +327,109 @@ function App() {
           </div>
         </nav>
       );
+    } else if (staffAuth && staffAuth.status) {
+      const staffName = `${staffAuth?.data?.firstName} ${staffAuth?.data?.lastName}`;
+      return (
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+          <div className="container-fluid">
+            <Link to="/" className="navbar-brand fs-4 fw-bold">
+              <img
+                src={webLogo}
+                alt=""
+                style={{
+                  height: "55px",
+                  marginRight: "540%",
+                  borderRadius: "50%",
+                }}
+              />
+              Home
+            </Link>
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span className="navbar-toggler-icon"></span>
+            </button>
+            <div className="collapse navbar-collapse" id="navbarNav">
+              <ul className="navbar-nav ms-auto">
+                <li className="nav-item dropdown">
+                  <Link
+                    className="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Hi {staffName}
+                  </Link>
+                  <ul
+                    className="dropdown-menu"
+                    aria-labelledby="navbarDropdown"
+                  >
+                    <li>
+                      <Link to="changePassword" className="dropdown-item">
+                        Change Password
+                      </Link>
+                    </li>
+                    <li>
+                      <button
+                        className="dropdown-item"
+                        onClick={handlestaffLogout}
+                      >
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </li>
+                <li className="nav-item">
+                  <Link to="/update-menu" className="nav-link">
+                    Update Menu
+                  </Link>
+                </li>
+                <li className="nav-item dropdown">
+                  <Link
+                    className="nav-link dropdown-toggle"
+                    href="#"
+                    id="inventoryDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Inventory
+                  </Link>
+                  <ul
+                    className="dropdown-menu"
+                    aria-labelledby="cateringDropdown"
+                    style={{ right: "0", left: "auto" }}
+                  >
+                    <li>
+                      <Link to="inventory" className="dropdown-item">
+                        Add items to Inventory
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="editinventory" className="dropdown-item">
+                        Update Inventory
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+                <li className="nav-item">
+                  <Link to="/order" className="nav-link">
+                    Orders
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      );
     } else {
       return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -518,6 +636,30 @@ function App() {
               element={
                 <Auth authRoute={true} redirectTo="/editinventory">
                   <EditInventory />
+                </Auth>
+              }
+            />
+            <Route
+              path="staff/signup"
+              element={
+                <Auth authRoute={true} redirectTo="/staff/signup">
+                  <StaffSignup />
+                </Auth>
+              }
+            />
+            <Route
+              path="staff/login"
+              element={
+                <Auth authRoute={true} redirectTo="/staff/login">
+                  <StaffLogin />
+                </Auth>
+              }
+            />
+            <Route
+              path="order"
+              element={
+                <Auth authRoute={true} redirectTo="/order">
+                  <AllOrders />
                 </Auth>
               }
             />

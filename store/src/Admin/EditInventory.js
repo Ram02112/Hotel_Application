@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Modal, Spinner, Form } from "react-bootstrap";
-
+import { message } from "antd";
 const EditInventory = () => {
   const [inventory, setInventory] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -58,6 +58,10 @@ const EditInventory = () => {
     try {
       await axios.delete(`http://localhost:4000/inventory/${id}`);
       fetchInventory();
+      message.success({
+        content: "Item deleted from inventory successfully",
+        duration: 3,
+      });
     } catch (error) {
       setError("Error deleting inventory item: " + error.message);
     } finally {
@@ -84,6 +88,7 @@ const EditInventory = () => {
       });
       fetchInventory();
       setEditModalOpen(false);
+      message.success({ content: "Item updated successfully", duration: 3 });
     } catch (error) {
       setError("Error editing inventory item: " + error.message);
     } finally {
@@ -124,7 +129,7 @@ const EditInventory = () => {
                   <tr key={item._id}>
                     <td>{item.nameOfRawMaterial}</td>
                     <td>$ {item.price}</td>
-                    <td>{item.quantity} Kgs</td>
+                    <td>{item.quantity} </td>
                     <td>
                       <button
                         className="btn btn-primary btn-sm me-2"

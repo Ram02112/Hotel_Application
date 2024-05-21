@@ -50,14 +50,14 @@ function Bookings() {
         time: [time],
         numberOfPeople,
       });
-      message.success({ response: response.data.message, duration: 3 });
+      message.success({ content: "Booking Successful", duration: 3 });
 
       setName("");
       setDate("");
       setTime("");
       setNumberOfPeople("");
     } catch (error) {
-      message.error({ response: error.response.data.message, duration: 3 });
+      message.error({ content: "Booking Failed", duration: 3 });
     }
   };
 

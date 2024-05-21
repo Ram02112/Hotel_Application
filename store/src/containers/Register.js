@@ -11,6 +11,7 @@ function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [agreement, setAgreement] = useState(false);
+  const [isStudent, setIsStudent] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { customerRegister } = useCustomers();
@@ -21,7 +22,7 @@ function Register() {
       message.warning("Please accept the agreement");
       return;
     }
-    const data = { firstName, lastName, email, password };
+    const data = { firstName, lastName, email, password, isStudent };
     dispatch(customerRegister(data)).then((res) => {
       if (res.payload.status) {
         message.success(res.payload.message);
@@ -113,6 +114,18 @@ function Register() {
               />
               <label className="form-check-label" htmlFor="agreement">
                 I have read the <Link to="#">agreement</Link>
+              </label>
+            </div>
+            <div className="mb-3 form-check">
+              <input
+                type="checkbox"
+                className="form-check-input"
+                id="isStudent"
+                checked={isStudent}
+                onChange={(e) => setIsStudent(e.target.checked)}
+              />
+              <label className="form-check-label" htmlFor="isStudent">
+                I am a student
               </label>
             </div>
             <button type="submit" className="btn btn-primary">

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import { message } from "antd";
 const InventoryManagement = ({ fetchInventory }) => {
   const [formData, setFormData] = useState({
     nameOfRawMaterial: "",
@@ -17,6 +17,7 @@ const InventoryManagement = ({ fetchInventory }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError("");
     try {
       await axios.post("http://localhost:4000/inventory/add", formData);
       setFormData({
@@ -24,8 +25,18 @@ const InventoryManagement = ({ fetchInventory }) => {
         price: "",
         quantity: "",
       });
+      if (fetchInventory) {
+        fetchInventory();
+      }
+      message.success({
+        content: "Added Item to inventory successfully",
+        duration: 3,
+      });
     } catch (error) {
-      setError("Error adding inventory: " + error.message);
+      setError(
+        "Error adding inventory: " +
+          (error.response?.data?.message || error.message)
+      );
     } finally {
       setLoading(false);
     }

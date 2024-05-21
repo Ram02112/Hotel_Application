@@ -7,6 +7,7 @@ import { sumBy } from "lodash";
 import StripeCheckout from "react-stripe-checkout";
 import useOrders from "../_actions/orderActions";
 import OrderResult from "./OrderResult";
+
 const Cart = () => {
   const dispatch = useDispatch();
   const { getCartItems, updateCartItems, deleteCartItems, clearCart } =
@@ -19,14 +20,14 @@ const Cart = () => {
 
   const [editItem, setEditItem] = useState(null);
   const [quantity, setQuantity] = useState(null);
-  const [couponCode, setCouponCode] = useState("");
-
   const [showResult, setShowResult] = useState(false);
+
   useEffect(() => {
     if (auth) {
       dispatch(getCartItems());
     }
   }, []);
+
   const handleEdit = (item) => {
     setEditItem(item);
     setQuantity(item.quantity);
@@ -43,10 +44,10 @@ const Cart = () => {
     };
     dispatch(updateCartItems(data)).then((res) => {
       if (res.payload.status) {
-        message.success({ response: res.payload.message, duration: 3 });
+        message.success({ content: "Cart updated successfully", duration: 3 });
         setEditItem(null);
       } else {
-        message.error({ response: res.payload.message, duration: 3 });
+        message.error({ content: "Failed to update cart", duration: 3 });
       }
     });
   };
@@ -54,9 +55,15 @@ const Cart = () => {
   const handleDelete = (item) => {
     dispatch(deleteCartItems(item._product._id)).then((res) => {
       if (res.payload.status) {
-        message.success({ response: res.payload.message, duration: 3 });
+        message.success({
+          content: "Item deleted from cart successfully",
+          duration: 3,
+        });
       } else {
-        message.error({ response: res.payload.message, duration: 3 });
+        message.error({
+          content: "failed to delete item from cart",
+          duration: 3,
+        });
       }
     });
   };
@@ -67,7 +74,7 @@ const Cart = () => {
         clearCart();
         setShowResult(true);
       } else {
-        message.error({ response: res.payload.message, duration: 3 });
+        message.error({ content: "Payment Successful", duration: 3 });
       }
     });
   };
@@ -80,31 +87,31 @@ const Cart = () => {
     return (
       <div className="table-responsive">
         <table className="table table-striped">
-          <thead>
+          <thead className="bg-primary text-light">
             <tr>
-              <th>Product</th>
-              <th>Price ($)</th>
-              <th>Quantity</th>
-              <th>Amount ($)</th>
-              <th>Actions</th>
+              <th className="align-middle">Product</th>
+              <th className="align-middle">Price ($)</th>
+              <th className="align-middle">Quantity</th>
+              <th className="align-middle">Amount ($)</th>
+              <th className="align-middle">Actions</th>
             </tr>
           </thead>
           <tbody>
             {cartItems.map((item) => (
               <tr key={item._product._id}>
-                <td>
+                <td className="align-middle">
                   <div className="d-flex align-items-center">
                     <img
                       src={item._product.image}
                       alt="Product"
-                      className="img-fluid rounded mr-2"
+                      className="img-fluid rounded me-2"
                       style={{ maxWidth: "50px" }}
                     />
                     <span>{item._product.name}</span>
                   </div>
                 </td>
-                <td>${item.price.toFixed(2)}</td>
-                <td>
+                <td className="align-middle">${item.price.toFixed(2)}</td>
+                <td className="align-middle">
                   {editItem && editItem._product._id === item._product._id ? (
                     <input
                       type="number"
@@ -113,38 +120,36 @@ const Cart = () => {
                       onChange={(e) => setQuantity(e.target.value)}
                     />
                   ) : (
-                    item.quantity
+                    <span>{item.quantity}</span>
                   )}
                 </td>
-                <td>${item.amount.toFixed(2)}</td>
-                <td>
+                <td className="align-middle">${item.amount.toFixed(2)}</td>
+                <td className="align-middle">
                   {editItem && editItem._product._id === item._product._id ? (
-                    <div>
+                    <div className="d-flex">
                       <button
-                        className="btn btn-sm btn-success "
+                        className="btn btn-success me-2"
                         onClick={() => handleUpdateCartItems(item)}
-                        style={{ marginRight: "10px" }}
                       >
                         <FaSave />
                       </button>
                       <button
-                        className="btn btn-sm btn-secondary "
+                        className="btn btn-secondary"
                         onClick={handleReset}
                       >
                         <FaTimes />
                       </button>
                     </div>
                   ) : (
-                    <div>
+                    <div className="d-flex">
                       <button
-                        className="btn btn-sm btn-primary"
+                        className="btn btn-primary me-2"
                         onClick={() => handleEdit(item)}
-                        style={{ marginRight: "10px" }}
                       >
                         <FaEdit />
                       </button>
                       <button
-                        className="btn btn-sm btn-danger"
+                        className="btn btn-danger"
                         onClick={() => handleDelete(item)}
                       >
                         <FaTrash />
@@ -159,41 +164,35 @@ const Cart = () => {
       </div>
     );
   };
+
   const renderCheckout = () => {
     const total =
       Math.round(sumBy(cartItems, (item) => item.amount) * 100) / 100;
 
-    const applyCoupon = () => {
-      if (couponCode === "SAVE10") {
-        return Math.round(total * 0.9);
-      } else {
-        return null;
-      }
-    };
-
-    const discountedTotal = applyCoupon();
-    const displayTotal = discountedTotal !== null ? discountedTotal : total;
+    // Check if the user is a student and apply a 10% discount if true
+    const isStudent = auth?.data?.isStudent;
+    const discountPercentage = isStudent ? 0.1 : 0;
+    const discountedTotal = total * (1 - discountPercentage);
 
     if (cartItems?.length > 0) {
       return (
         <center>
-          <p>Total Amount : $ {total.toFixed(2)}</p>
-          {discountedTotal !== null && (
-            <p>Discounted Amount : ${discountedTotal.toFixed(2)}</p>
+          <p>Total Amount: ${total.toFixed(2)}</p>
+          {isStudent && (
+            <p style={{ color: "green" }}>Student discount applied (10% off)</p>
           )}
+          <p>Discounted Amount: ${discountedTotal.toFixed(2)}</p>
           <input
-            type="text"
-            className="form-control w-25"
-            onChange={(e) => setCouponCode(e.target.value)}
-            placeholder="Enter coupon code"
+            type="hidden"
+            name="discountedAmount"
+            value={discountedTotal.toFixed(2)}
           />
-          <br />
           <StripeCheckout
             name="payment"
             email={auth?.data?.email}
             description="Order Payment"
-            amount={displayTotal * 100}
-            token={(token) => handlePayment(token, displayTotal)}
+            amount={Math.round(discountedTotal * 100)}
+            token={(token) => handlePayment(token, discountedTotal)}
             stripeKey="pk_test_51PBA8YRqKgtFpEdWZ4ngjn5FKwzaR3wgtGgtyzBCyr8MnwBQZGdbUzmKvbEpiEWjtdDayyMsbXNGguE78tgjsI2800VOS4LBtD"
           >
             <button className="btn btn-primary">Pay Now</button>

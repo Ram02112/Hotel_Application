@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import cartIcon from "../../assets/img/cart.svg";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { message } from "antd";
 import useCart from "../../_actions/cartActions";
-
+import FloatingCartIcon from "./FloatingCartIcon";
 const MenuItems = ({ menuItems }) => {
   const { addToCart } = useCart();
   const dispatch = useDispatch();
   const [expandedMenus, setExpandedMenus] = useState({});
+  const cartItems = useSelector((state) => state.cart.cartItems?.cartDetails);
 
   const handleAddToCart = (menuItem) => {
     const data = {
@@ -17,9 +18,12 @@ const MenuItems = ({ menuItems }) => {
     };
     dispatch(addToCart(data)).then((res) => {
       if (res.payload.status) {
-        message.success({ response: res.payload.message, duration: 3 });
+        message.success({ content: "Add to cart successful", duration: 3 });
       } else {
-        message.error({ response: res.payload.message, duaration: 3 });
+        message.error({
+          content: "You need to login to continue",
+          duration: 3,
+        });
       }
     });
   };
@@ -117,6 +121,11 @@ const MenuItems = ({ menuItems }) => {
             </div>
           </div>
         ))}
+        {cartItems && cartItems.length > 0 && (
+          <div className="position-fixed bottom-0 end-0 p-3">
+            <FloatingCartIcon />
+          </div>
+        )}
       </div>
     </div>
   );

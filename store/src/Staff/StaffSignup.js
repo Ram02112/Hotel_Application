@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import useAdmin from "../_actions/adminActions";
+import useStaff from "../_actions/staffActions";
 import { message } from "antd";
 
-function Register() {
+function StaffSignup() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -12,7 +12,7 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [agreement, setAgreement] = useState(false);
   const dispatch = useDispatch();
-  const { adminRegister } = useAdmin();
+  const { staffRegister } = useStaff();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,12 +21,12 @@ function Register() {
       return;
     }
     const data = { firstName, lastName, email, password };
-    dispatch(adminRegister(data))
+    dispatch(staffRegister(data))
       .then((res) => {
         if (res.payload.status) {
-          message.success({ content: "Signup Successful", duration: 3 });
+          message.success(res.payload.message);
         } else {
-          message.error({ content: "Signup failed", duration: 3 });
+          message.error(res.payload.message);
         }
       })
       .catch((error) => {
@@ -40,7 +40,7 @@ function Register() {
         <div className="col-md-6">
           <div className="card shadow-sm">
             <div className="card-body">
-              <h2 className="card-title mb-4">Admin Register</h2>
+              <h2 className="card-title mb-4">Staff Register</h2>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label htmlFor="firstName" className="form-label">
@@ -131,4 +131,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default StaffSignup;

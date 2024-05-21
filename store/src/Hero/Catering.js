@@ -72,12 +72,15 @@ const CateringForm = () => {
           time: [time],
         }
       );
-      message.success({ response: response.data.message, duration: 3 });
+      message.success({
+        content: "Catering scheduled successfully",
+        duration: 3,
+      });
       setTimeout(() => {
         window.location.reload();
       }, 1000);
     } catch (error) {
-      message.error({ response: error.response.data.message, duration: 3 });
+      message.error({ content: "Failed to schedule catering", duration: 3 });
     }
   };
 
