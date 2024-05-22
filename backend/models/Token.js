@@ -10,8 +10,8 @@ const tokenSchema = Schema({
     type: Schema.Types.ObjectId,
     ref: "customers",
   },
-  _adminId: { type: Schema.Types.ObjectId, required: true },
-  _staffId: { type: Schema.Types.ObjectId, required: true },
+  _adminId: { type: Schema.Types.ObjectId, required: true, ref: "Admin" },
+  _staffId: { type: Schema.Types.ObjectId, required: true, ref: "Staff" },
   tokenType: {
     type: String,
     enum: ["login", "resetPassword"],

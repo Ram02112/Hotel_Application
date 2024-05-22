@@ -63,17 +63,11 @@ let staffAuth = (req, res, next) => {
     Token.findOne(
       { _staffId: decoded.staffId, token, tokenType: "login" },
       (err, staffToken) => {
-        if (err) {
-          console.error("Error while verifying token:", err);
-          return res.status(500).json({
-            status: false,
-            message: "Internal server error",
-          });
-        }
+        if (err) throw err;
         if (!staffToken) {
-          return res.status(401).json({
+          return res.json({
             status: false,
-            message: "Invalid or expired token",
+            message: "Authentication failed",
           });
         }
         req.token = token;
@@ -82,12 +76,45 @@ let staffAuth = (req, res, next) => {
       }
     );
   } catch (error) {
-    console.error("Error during authentication:", error);
-    return res.status(401).json({
+    return res.json({
       status: false,
       message: "Authentication failed",
     });
   }
 };
+// let staffAuth = (req, res, next) => {
+//   try {
+//     const token = req.headers.authorization.split(" ")[1];
+//     const decoded = jwt.verify(token, process.env.JWT_KEY);
+
+//     Token.findOne(
+//       { _staffId: decoded.staffId, token, tokenType: "login" },
+//       (err, staffToken) => {
+//         if (err) {
+//           console.error("Error while verifying token:", err);
+//           return res.status(500).json({
+//             status: false,
+//             message: "Internal server error",
+//           });
+//         }
+//         if (!staffToken) {
+//           return res.status(401).json({
+//             status: false,
+//             message: "Invalid or expired token",
+//           });
+//         }
+//         req.token = token;
+//         req.staffId = decoded.staffId;
+//         next();
+//       }
+//     );
+//   } catch (error) {
+//     console.error("Error during authentication:", error);
+//     return res.status(401).json({
+//       status: false,
+//       message: "Authentication failed",
+//     });
+//   }
+// };
 
 module.exports = { auth, adminAuth, staffAuth };

@@ -17,8 +17,8 @@ function StaffLogin() {
     const formData = { email, password };
     dispatch(staffLogin(formData)).then((res) => {
       if (res.payload.status) {
-        const token = res.payload.data.token;
-        localStorage.setItem("staffToken", token);
+        const staffToken = res.payload.data.token;
+        localStorage.setItem("staffToken", staffToken);
         message.success(res.payload.message);
         window.location.reload();
       } else {

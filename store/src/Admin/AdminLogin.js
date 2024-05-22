@@ -17,8 +17,8 @@ function Login() {
     const formData = { email, password };
     dispatch(adminLogin(formData)).then((res) => {
       if (res.payload.status) {
-        const token = res.payload.data.token;
-        localStorage.setItem("adminToken", token);
+        const Admintoken = res.payload.data.token;
+        localStorage.setItem("adminToken", Admintoken);
         message.success({ content: "Login successful", duration: 3 });
         window.location.reload();
       } else {
