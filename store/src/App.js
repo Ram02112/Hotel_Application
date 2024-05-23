@@ -35,6 +35,7 @@ import EditInventory from "./Admin/EditInventory";
 import StaffSignup from "./Staff/StaffSignup";
 import StaffLogin from "./Staff/StaffLogin";
 import AllOrders from "./Staff/Orders";
+import NewsletterComposer from "./Admin/Newsletter";
 function App() {
   let auth = useSelector((state) => state.customer?.auth);
   let adminAuth = useSelector((state) => state.admin?.adminAuth);
@@ -220,7 +221,7 @@ function App() {
                 alt=""
                 style={{
                   height: "55px",
-                  marginRight: "540%",
+                  marginRight: "500%",
                   borderRadius: "50%",
                 }}
               />
@@ -320,6 +321,11 @@ function App() {
                 <li className="nav-item">
                   <Link to="/admin/catering" className="nav-link">
                     Caterings
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/admin/newsletter" className="nav-link">
+                    News Letter
                   </Link>
                 </li>
               </ul>
@@ -660,6 +666,14 @@ function App() {
               element={
                 <Auth authRoute={true} redirectTo="/order">
                   <AllOrders />
+                </Auth>
+              }
+            />
+            <Route
+              path="/admin/newsletter"
+              element={
+                <Auth authRoute={true} redirectTo="/admin/newsletter">
+                  <NewsletterComposer />
                 </Auth>
               }
             />
