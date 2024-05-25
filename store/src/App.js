@@ -36,6 +36,7 @@ import StaffSignup from "./Staff/StaffSignup";
 import StaffLogin from "./Staff/StaffLogin";
 import AllOrders from "./Staff/Orders";
 import NewsletterComposer from "./Admin/Newsletter";
+import AdminCategory from "./Admin/AdminCategory";
 function App() {
   let auth = useSelector((state) => state.customer?.auth);
   let adminAuth = useSelector((state) => state.admin?.adminAuth);
@@ -270,16 +271,39 @@ function App() {
                     </li>
                   </ul>
                 </li>
-                <li className="nav-item">
-                  <Link to="/admin-dashboard" className="nav-link">
-                    Add Menu
+                <li className="nav-item dropdown">
+                  <Link
+                    href="#"
+                    className="nav-link dropdown-toggle"
+                    id="menuDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Menu
                   </Link>
+                  <ul
+                    className="dropdown-menu"
+                    aria-labelledby="cateringDropdown"
+                  >
+                    <li>
+                      <Link to="/admin-dashboard" className="dropdown-item">
+                        Add Items to Menu
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/update-menu" className="dropdown-item">
+                        Update Menu
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/category" className="dropdown-item">
+                        Add Category
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
-                <li className="nav-item">
-                  <Link to="/update-menu" className="nav-link">
-                    Update Menu
-                  </Link>
-                </li>
+
                 <li className="nav-item dropdown">
                   <Link
                     className="nav-link dropdown-toggle"
@@ -674,6 +698,14 @@ function App() {
               element={
                 <Auth authRoute={true} redirectTo="/admin/newsletter">
                   <NewsletterComposer />
+                </Auth>
+              }
+            />
+            <Route
+              path="/category"
+              element={
+                <Auth authRoute={true} redirectTo="/category">
+                  <AdminCategory />
                 </Auth>
               }
             />

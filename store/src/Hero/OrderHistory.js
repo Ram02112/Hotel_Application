@@ -77,9 +77,19 @@ const OrderHistory = () => {
       html2canvas(input).then((canvas) => {
         const imgData = canvas.toDataURL("image/png");
         const pdf = new jsPDF();
+        pdf.setFontSize(20);
+        pdf.text("Thank you for your purchase!", 10, 20);
+        pdf.setFontSize(12);
+        pdf.text(
+          `Order Date: ${moment(order.orderDate).format(
+            "DD-MM-YYYY"
+          )}\n Order Time : ${moment(order.orderDate).format("HH:mm")}`,
+          10,
+          30
+        );
         const imgWidth = 210;
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
-        pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+        pdf.addImage(imgData, "PNG", 0, 40, imgWidth, imgHeight);
         pdf.save("invoice.pdf");
       });
     };
@@ -89,6 +99,7 @@ const OrderHistory = () => {
         <table
           className="table table-bordered table-sm"
           id={`invoice-${order._id}`}
+          style={{ marginTop: "20px" }}
         >
           <thead>
             <tr>
@@ -103,7 +114,9 @@ const OrderHistory = () => {
             {order.orderDetails.map((item) => (
               <tr key={item._id}>
                 <td>{order._id}</td>
-                <td>{item._product.name}</td>
+                <td>
+                  {item._product ? item._product.name : "Product not available"}
+                </td>
                 <td className="text-center">${item.price.toFixed(2)}</td>
                 <td className="text-center">{item.quantity}</td>
                 <td className="text-center">${item.amount.toFixed(2)}</td>

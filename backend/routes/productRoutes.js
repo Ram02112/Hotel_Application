@@ -1,10 +1,28 @@
 const express = require("express");
 const router = express.Router();
 const Product = require("../models/Product");
+const Category = require("../models/Category");
+
+const multer = require("multer");
+const path = require("path");
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 router.get("/", async (req, res) => {
   try {
-    const products = await Product.find().populate("_category");
+    const products = await Product.find().populate({
+      path: "_category",
+      select: "name",
+    });
     const productsWithImages = products.map((product) => ({
       _id: product._id,
       name: product.name,
@@ -13,6 +31,7 @@ router.get("/", async (req, res) => {
       price: product.price,
       image: product.image,
       outOfStock: product.outOfStock,
+      category: product._category ? product._category.name : "Uncategorized",
     }));
 
     res.status(200).json(productsWithImages);
@@ -22,9 +41,18 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/create", async (req, res) => {
-  const { _id, name, price, description, calories, image } = req.body;
+router.post("/create", upload.single("imageFile"), async (req, res) => {
+  const { _id, name, price, description, calories, category } = req.body;
+
   try {
+    if (!req.file) {
+      return res
+        .status(400)
+        .json({ status: false, message: "Image file is required" });
+    }
+
+    const imageUrl = path.join("uploads", req.file.filename);
+
     const product = new Product({
       _id,
       name,
@@ -32,8 +60,10 @@ router.post("/create", async (req, res) => {
       calories,
       price,
       outOfStock: false,
-      image,
+      image: imageUrl,
+      _category: category,
     });
+
     const savedProduct = await product.save();
     res.status(200).json({
       status: true,
@@ -41,17 +71,36 @@ router.post("/create", async (req, res) => {
       data: savedProduct,
     });
   } catch (error) {
+    console.error("Error adding product:", error);
     res.status(400).json({ status: false, error: error.message });
   }
 });
 
-router.put("/update/:id", async (req, res) => {
+router.put("/update/:id", upload.single("imageFile"), async (req, res) => {
   try {
-    const { id } = req.params;
-    const updatedItem = await Product.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
-    res.status(200).json(updatedItem);
+    const productId = req.params.id;
+
+    if (!req.file) {
+      return res
+        .status(400)
+        .json({ status: false, message: "Image file is required" });
+    }
+
+    const foundProduct = await Product.findById(productId);
+    if (!foundProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    const uploadedImage = req.file;
+    const imageUrl = path.join("uploads", uploadedImage.filename);
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      productId,
+      { image: imageUrl },
+      { new: true, runValidators: true }
+    );
+
+    res.status(200).json(updatedProduct);
   } catch (error) {
     console.error("Error updating menu item:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -71,15 +120,15 @@ router.delete("/delete/:id", async (req, res) => {
 
 router.get("/:productId", async (req, res) => {
   try {
-    const productId = req.params.productId;
-    const product = await Product.findById(productId);
+    const productId = req.params.id;
+    const product = await Product.findById(productId).populate("_category");
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
-    res.status(200).json({ product });
+    res.status(200).json(product);
   } catch (error) {
-    console.error("Error fetching product details:", error);
-    res.status(500).json({ message: "Internal server error" });
+    console.error("Error fetching product:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 

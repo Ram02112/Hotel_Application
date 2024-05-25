@@ -38,6 +38,11 @@ const Cart = () => {
   };
 
   const handleUpdateCartItems = (item) => {
+    if (parseInt(quantity) === 0) {
+      handleDelete(item);
+      return;
+    }
+
     const data = {
       _productId: item?._product?._id,
       quantity,
@@ -102,7 +107,7 @@ const Cart = () => {
                 <td className="align-middle">
                   <div className="d-flex align-items-center">
                     <img
-                      src={item._product.image}
+                      src={`http://localhost:4000/${item._product.image}`}
                       alt="Product"
                       className="img-fluid rounded me-2"
                       style={{ maxWidth: "50px" }}
@@ -117,7 +122,13 @@ const Cart = () => {
                       type="number"
                       className="form-control"
                       value={quantity}
+                      min="0"
                       onChange={(e) => setQuantity(e.target.value)}
+                      onKeyPress={(e) => {
+                        if (!/[0-9]/.test(e.key)) {
+                          e.preventDefault();
+                        }
+                      }}
                     />
                   ) : (
                     <span>{item.quantity}</span>

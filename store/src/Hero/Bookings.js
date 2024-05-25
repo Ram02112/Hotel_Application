@@ -138,8 +138,8 @@ function Bookings() {
                     className="form-control"
                     value={numberOfPeople}
                     onChange={(e) => setNumberOfPeople(e.target.value)}
-                    max="6"
-                    min="1"
+                    max="20"
+                    min="6"
                   />
                 </div>
                 <button

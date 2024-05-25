@@ -1,38 +1,62 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { message } from "antd";
+import { message, Select } from "antd";
+
+const { Option } = Select;
+
 const AddMenuItemForm = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [calories, setCalories] = useState("");
   const [price, setPrice] = useState("");
-  const [imageURL, setImageURL] = useState("");
+  const [imageFile, setImageFile] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/categories");
+      if (response.ok) {
+        const data = await response.json();
+        setCategories(data.data);
+      } else {
+        message.error("Failed to fetch categories");
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("calories", calories);
+    formData.append("price", price);
+    formData.append("category", selectedCategory?._id);
+    formData.append("imageFile", imageFile);
+
     try {
       const response = await fetch("http://localhost:4000/products/create", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          description,
-          calories,
-          price,
-          image: imageURL,
-        }),
+        body: formData,
       });
       if (response.ok) {
         setName("");
         setDescription("");
         setCalories("");
         setPrice("");
-        setImageURL("");
+        setImageFile(null);
+        setSelectedCategory(null);
         const res = await response.json();
         message.success(res.message);
+        fetchCategories();
       } else {
         message.warning({
           content: "Failed to add menu item",
@@ -47,6 +71,10 @@ const AddMenuItemForm = () => {
         duration: 3,
       });
     }
+  };
+
+  const handleImageFileChange = (e) => {
+    setImageFile(e.target.files[0]);
   };
 
   return (
@@ -106,15 +134,39 @@ const AddMenuItemForm = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="imageURL" className="form-label">
-                    Image URL
+                  <label htmlFor="category" className="form-label">
+                    Category
+                  </label>
+                  <Select
+                    showSearch
+                    style={{ width: "100%" }}
+                    placeholder="Select a category"
+                    optionFilterProp="children"
+                    value={selectedCategory ? selectedCategory._id : null}
+                    onChange={(value) => {
+                      const category = categories.find(
+                        (cat) => cat._id === value
+                      );
+                      setSelectedCategory(category);
+                    }}
+                  >
+                    {categories &&
+                      categories.map((category) => (
+                        <Option key={category._id} value={category._id}>
+                          {category.name}
+                        </Option>
+                      ))}
+                  </Select>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="imageFile" className="form-label">
+                    Upload Image
                   </label>
                   <input
-                    type="text"
+                    type="file"
                     className="form-control"
-                    id="imageURL"
-                    value={imageURL}
-                    onChange={(e) => setImageURL(e.target.value)}
+                    id="imageFile"
+                    onChange={handleImageFileChange}
                   />
                 </div>
                 <button
