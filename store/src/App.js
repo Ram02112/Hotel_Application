@@ -19,7 +19,7 @@ import AdminMenu from "./Admin/AdminMenu";
 import Cart from "./Hero/Cart";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import webLogo from "./assets/img/hotel_logo.jpeg";
+import webLogo from "./assets/img/weblogo.jpg";
 import { sumBy } from "lodash";
 import OrderHistory from "./Hero/OrderHistory";
 import ReportPage from "./Admin/Report";
@@ -37,6 +37,7 @@ import StaffLogin from "./Staff/StaffLogin";
 import AllOrders from "./Staff/Orders";
 import NewsletterComposer from "./Admin/Newsletter";
 import AdminCategory from "./Admin/AdminCategory";
+import Feedback from "./Admin/Feedback";
 function App() {
   let auth = useSelector((state) => state.customer?.auth);
   let adminAuth = useSelector((state) => state.admin?.adminAuth);
@@ -350,6 +351,11 @@ function App() {
                 <li className="nav-item">
                   <Link to="/admin/newsletter" className="nav-link">
                     News Letter
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/feedback" className="nav-link">
+                    Feedback
                   </Link>
                 </li>
               </ul>
@@ -706,6 +712,14 @@ function App() {
               element={
                 <Auth authRoute={true} redirectTo="/category">
                   <AdminCategory />
+                </Auth>
+              }
+            />
+            <Route
+              path="/feedback"
+              element={
+                <Auth authRoute={true} redirectTo="/feedback">
+                  <Feedback />
                 </Auth>
               }
             />

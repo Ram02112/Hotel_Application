@@ -44,6 +44,7 @@ app.use("/inventory", require("./routes/inventoryRoutes"));
 app.use("/catering", require("./routes/cateringRoutes"));
 app.use("/staff", require("./routes/staffRoutes"));
 app.use("/news", require("./routes/newsRoutes"));
+app.use("/feedback", require("./routes/feedbackRoutes"));
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

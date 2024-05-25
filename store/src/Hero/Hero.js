@@ -104,7 +104,7 @@ const Hero = () => {
           {menuItems.map((item) => (
             <div className="col-md-4 mb-4" key={item._id}>
               <FoodMenuItem
-                image={item.image}
+                image={`http://localhost:4000/${item.image}`}
                 price={item.price}
                 name={item.name}
                 ingredients={item.description}
