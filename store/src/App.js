@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+import { Modal } from "react-bootstrap";
 import { message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
@@ -39,6 +41,15 @@ import NewsletterComposer from "./Admin/Newsletter";
 import AdminCategory from "./Admin/AdminCategory";
 import Feedback from "./Admin/Feedback";
 function App() {
+  const [showModal, setShowModal] = useState(false);
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
   let auth = useSelector((state) => state.customer?.auth);
   let adminAuth = useSelector((state) => state.admin?.adminAuth);
   let staffAuth = useSelector((state) => state.staff?.staffAuth);
@@ -85,18 +96,31 @@ function App() {
       return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <div className="container-fluid">
-            <Link to="/" className="navbar-brand fw-bold fs-4">
-              <img
-                src={webLogo}
-                alt=""
-                style={{
-                  height: "55px",
-                  marginRight: "540%",
-                  borderRadius: "50%",
-                }}
-              />
-              Home
-            </Link>
+            <>
+              <Link
+                to="/"
+                className="navbar-brand fs-4 fw-bold"
+                onClick={handleShowModal}
+              >
+                <img
+                  src={webLogo}
+                  alt=""
+                  style={{
+                    height: "55px",
+                    marginRight: "500%",
+                    borderRadius: "50%",
+                  }}
+                />
+              </Link>
+              <Modal show={showModal} onHide={handleCloseModal} centered>
+                <Modal.Header closeButton>
+                  <Modal.Title>Rest Cafe</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <img src={webLogo} alt="Web Logo" style={{ width: "100%" }} />
+                </Modal.Body>
+              </Modal>
+            </>
             <button
               className="navbar-toggler"
               type="button"
@@ -110,6 +134,11 @@ function App() {
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav ms-auto">
+                <li>
+                  <Link to="/" className="nav-link">
+                    Home
+                  </Link>
+                </li>
                 <li className="nav-item dropdown">
                   <Link
                     className="nav-link dropdown-toggle"
@@ -217,18 +246,31 @@ function App() {
       return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <div className="container-fluid">
-            <Link to="/" className="navbar-brand fs-4 fw-bold">
-              <img
-                src={webLogo}
-                alt=""
-                style={{
-                  height: "55px",
-                  marginRight: "500%",
-                  borderRadius: "50%",
-                }}
-              />
-              Home
-            </Link>
+            <>
+              <Link
+                to="/"
+                className="navbar-brand fs-4 fw-bold"
+                onClick={handleShowModal}
+              >
+                <img
+                  src={webLogo}
+                  alt=""
+                  style={{
+                    height: "55px",
+                    marginRight: "500%",
+                    borderRadius: "50%",
+                  }}
+                />
+              </Link>
+              <Modal show={showModal} onHide={handleCloseModal} centered>
+                <Modal.Header closeButton>
+                  <Modal.Title>Rest Cafe</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <img src={webLogo} alt="Web Logo" style={{ width: "100%" }} />
+                </Modal.Body>
+              </Modal>
+            </>
             <button
               className="navbar-toggler"
               type="button"
@@ -242,6 +284,11 @@ function App() {
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav ms-auto">
+                <li>
+                  <Link to="/" className="nav-link">
+                    Home
+                  </Link>
+                </li>
                 <li className="nav-item dropdown">
                   <Link
                     className="nav-link dropdown-toggle"
@@ -368,18 +415,31 @@ function App() {
       return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <div className="container-fluid">
-            <Link to="/" className="navbar-brand fs-4 fw-bold">
-              <img
-                src={webLogo}
-                alt=""
-                style={{
-                  height: "55px",
-                  marginRight: "540%",
-                  borderRadius: "50%",
-                }}
-              />
-              Home
-            </Link>
+            <>
+              <Link
+                to="/"
+                className="navbar-brand fs-4 fw-bold"
+                onClick={handleShowModal}
+              >
+                <img
+                  src={webLogo}
+                  alt=""
+                  style={{
+                    height: "55px",
+                    marginRight: "500%",
+                    borderRadius: "50%",
+                  }}
+                />
+              </Link>
+              <Modal show={showModal} onHide={handleCloseModal} centered>
+                <Modal.Header closeButton>
+                  <Modal.Title>Rest Cafe</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <img src={webLogo} alt="Web Logo" style={{ width: "100%" }} />
+                </Modal.Body>
+              </Modal>
+            </>
             <button
               className="navbar-toggler"
               type="button"
@@ -393,6 +453,11 @@ function App() {
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav ms-auto">
+                <li>
+                  <Link to="/" className="nav-link">
+                    Home
+                  </Link>
+                </li>
                 <li className="nav-item dropdown">
                   <Link
                     className="nav-link dropdown-toggle"
@@ -470,18 +535,31 @@ function App() {
       return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <div className="container-fluid">
-            <Link to="/" className="navbar-brand fw-bold fs-4">
-              <img
-                src={webLogo}
-                alt=""
-                style={{
-                  height: "55px",
-                  marginRight: "540%",
-                  borderRadius: "50%",
-                }}
-              />
-              Home
-            </Link>
+            <>
+              <Link
+                to="/"
+                className="navbar-brand fs-4 fw-bold"
+                onClick={handleShowModal}
+              >
+                <img
+                  src={webLogo}
+                  alt=""
+                  style={{
+                    height: "55px",
+                    marginRight: "500%",
+                    borderRadius: "50%",
+                  }}
+                />
+              </Link>
+              <Modal show={showModal} onHide={handleCloseModal} centered>
+                <Modal.Header closeButton>
+                  <Modal.Title>Rest Cafe</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <img src={webLogo} alt="Web Logo" style={{ width: "100%" }} />
+                </Modal.Body>
+              </Modal>
+            </>
             <button
               className="navbar-toggler"
               type="button"

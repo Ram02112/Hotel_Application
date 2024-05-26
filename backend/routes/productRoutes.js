@@ -79,26 +79,38 @@ router.post("/create", upload.single("imageFile"), async (req, res) => {
 router.put("/update/:id", upload.single("imageFile"), async (req, res) => {
   try {
     const productId = req.params.id;
-
-    if (!req.file) {
-      return res
-        .status(400)
-        .json({ status: false, message: "Image file is required" });
-    }
-
     const foundProduct = await Product.findById(productId);
+
     if (!foundProduct) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    const uploadedImage = req.file;
-    const imageUrl = path.join("uploads", uploadedImage.filename);
+    const updatedData = {
+      name: req.body.name,
+      price: req.body.price,
+      description: req.body.description,
+      calories: req.body.calories,
+      outOfStock:
+        req.body.outOfStock === "true" || req.body.outOfStock === true,
+    };
+
+    if (req.file) {
+      updatedData.image = path.join("uploads", req.file.filename);
+    }
+
+    if (req.body.category) {
+      const categoryDoc = await Category.findOne({ name: req.body.category });
+      if (!categoryDoc) {
+        return res.status(400).json({ message: "Invalid category" });
+      }
+      updatedData._category = categoryDoc._id;
+    }
 
     const updatedProduct = await Product.findByIdAndUpdate(
       productId,
-      { image: imageUrl },
+      updatedData,
       { new: true, runValidators: true }
-    );
+    ).populate("_category", "name");
 
     res.status(200).json(updatedProduct);
   } catch (error) {

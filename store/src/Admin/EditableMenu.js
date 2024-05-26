@@ -8,7 +8,6 @@ const EditableMenu = ({ menuItems }) => {
   const [selectedMenuItem, setSelectedMenuItem] = useState(null);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [useImageURL, setUseImageURL] = useState(false);
   const [filteredMenuItems, setFilteredMenuItems] = useState([]);
 
   useEffect(() => {
@@ -44,31 +43,25 @@ const EditableMenu = ({ menuItems }) => {
   const handleSaveChanges = async () => {
     try {
       const formData = new FormData();
-      formData.append("imageFile", selectedMenuItem.file);
-
-      const uploadResponse = await fetch("http://localhost:4000/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!uploadResponse.ok) {
-        throw new Error("Failed to upload image");
+      if (selectedMenuItem.file) {
+        formData.append("imageFile", selectedMenuItem.file);
       }
+      formData.append("name", selectedMenuItem.name);
+      formData.append("price", selectedMenuItem.price);
+      formData.append("description", selectedMenuItem.description);
+      formData.append("calories", selectedMenuItem.calories);
+      formData.append("category", selectedMenuItem.category);
+      formData.append("outOfStock", selectedMenuItem.outOfStock);
 
-      const imageUrl = await uploadResponse.text();
-
-      const saveResponse = await fetch(
+      const response = await fetch(
         `http://localhost:4000/products/update/${selectedMenuItem._id}`,
         {
           method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ ...selectedMenuItem, image: imageUrl }),
+          body: formData,
         }
       );
 
-      if (saveResponse.ok) {
+      if (response.ok) {
         message.success({
           content: "Menu item updated successfully",
           duration: 3,
@@ -109,6 +102,7 @@ const EditableMenu = ({ menuItems }) => {
       message.error(`Error deleting menu item: ${error}`);
     }
   };
+
   useEffect(() => {
     setFilteredMenuItems(
       selectedCategory
@@ -232,12 +226,11 @@ const EditableMenu = ({ menuItems }) => {
                   }
                 />
               </Form.Group>
-
               <Form.Group controlId="formCalories">
                 <Form.Label>Calories</Form.Label>
                 <Form.Control
-                  type="text"
-                  placeholder="Enter Calories"
+                  type="number"
+                  placeholder="Enter calories"
                   value={selectedMenuItem.calories}
                   onChange={(e) =>
                     setSelectedMenuItem({
@@ -247,24 +240,6 @@ const EditableMenu = ({ menuItems }) => {
                   }
                 />
               </Form.Group>
-
-              <Form.Group controlId="formImage">
-                <Form.Group controlId="formImageFile">
-                  <Form.Label>Upload Image</Form.Label>
-                  <Form.Control
-                    type="file"
-                    onChange={(e) => {
-                      const file = e.target.files[0];
-                      setSelectedMenuItem({
-                        ...selectedMenuItem,
-                        file: file,
-                        image: URL.createObjectURL(file),
-                      });
-                    }}
-                  />
-                </Form.Group>
-              </Form.Group>
-
               <Form.Group controlId="formCategory">
                 <Form.Label>Category</Form.Label>
                 <Form.Control
@@ -277,15 +252,14 @@ const EditableMenu = ({ menuItems }) => {
                     })
                   }
                 >
-                  {Array.isArray(categories) &&
-                    categories.map((category) => (
-                      <option key={category._id} value={category.name}>
-                        {category.name}
-                      </option>
-                    ))}
+                  <option value="">Select Category</option>
+                  {categories.map((category) => (
+                    <option key={category._id} value={category.name}>
+                      {category.name}
+                    </option>
+                  ))}
                 </Form.Control>
               </Form.Group>
-
               <Form.Group controlId="formOutOfStock">
                 <Form.Check
                   type="checkbox"
@@ -295,6 +269,18 @@ const EditableMenu = ({ menuItems }) => {
                     setSelectedMenuItem({
                       ...selectedMenuItem,
                       outOfStock: e.target.checked,
+                    })
+                  }
+                />
+              </Form.Group>
+              <Form.Group controlId="formFile">
+                <Form.Label>Image File</Form.Label>
+                <Form.Control
+                  type="file"
+                  onChange={(e) =>
+                    setSelectedMenuItem({
+                      ...selectedMenuItem,
+                      file: e.target.files[0],
                     })
                   }
                 />
