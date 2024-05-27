@@ -98,6 +98,7 @@ router.get("/report", auth, (req, res) => {
       });
     });
 });
+
 router.get("/allOrders", auth, async (req, res) => {
   try {
     const orders = await Order.find().sort({ orderDate: "desc" }).exec();
@@ -105,14 +106,18 @@ router.get("/allOrders", auth, async (req, res) => {
     const ordersWithCustomerName = await Promise.all(
       orders.map(async (order) => {
         const customer = await Customer.findById(order._customerId);
-        const customerName = customer ? customer.name : "N/A";
+        console.log(customer);
+        const customerName = customer
+          ? customer.firstName + customer.lastName
+          : "N/A";
+        console.log("Customer Name:", customerName);
         return {
           ...order.toObject(),
           customerName,
         };
       })
     );
-
+    console.log(ordersWithCustomerName);
     res.status(200).json({
       status: true,
       message: "All orders retrieved successfully",

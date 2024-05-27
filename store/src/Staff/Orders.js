@@ -39,7 +39,8 @@ const AllOrders = () => {
               const productResponse = await axios.get(
                 `http://localhost:4000/products/${detail._product}`
               );
-              const productName = productResponse.data.product.name;
+              console.log(productResponse.data);
+              const productName = productResponse.data.name;
               return {
                 ...detail,
                 productName,
