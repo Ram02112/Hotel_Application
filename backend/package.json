@@ -28,6 +28,7 @@
     "nodemailer": "^6.9.13",
     "nodemon": "^2.0.15",
     "react-chartjs-2": "^5.2.0",
-    "stripe": "^15.4.0"
+    "stripe": "^15.4.0",
+    "uuid": "^9.0.1"
   }
 }

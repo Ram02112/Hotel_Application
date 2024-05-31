@@ -218,10 +218,7 @@ const Cart = () => {
       <h1 className="mb-4">Cart</h1>
       {renderCartItems()}
       {renderCheckout()}
-      <OrderResult
-        visible={showResult}
-        oncCancel={() => setShowResult(false)}
-      />
+      <OrderResult visible={showResult} onCancel={() => setShowResult(false)} />
     </div>
   );
 };
