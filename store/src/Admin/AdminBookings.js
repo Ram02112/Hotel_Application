@@ -51,9 +51,10 @@ const AdminBookings = () => {
 
   const handleEditBooking = (booking) => {
     setCurrentBooking(booking);
+    const formattedDate = new Date(booking.date).toISOString().split("T")[0];
     form.setFieldsValue({
       name: booking.name,
-      date: moment(booking.date),
+      date: formattedDate,
       time: booking.time[0],
       numberOfPeople: booking.numberOfPeople,
     });
@@ -170,6 +171,12 @@ const AdminBookings = () => {
             label="Name of Booking"
             rules={[
               { required: true, message: "Please enter name of booking" },
+              {
+                type: "number",
+                min: 1,
+                max: 6,
+                message: "Number of people must be between 1 and 6",
+              },
             ]}
           >
             <Input />

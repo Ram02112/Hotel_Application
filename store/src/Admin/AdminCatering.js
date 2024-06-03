@@ -58,12 +58,13 @@ const AdminCatering = () => {
 
   const handleEditCatering = (catering) => {
     setCurrentCatering(catering);
+    const formattedDate = new Date(catering.date).toISOString().split("T")[0];
     form.setFieldsValue({
       cateringName: catering.cateringName,
       address: catering.address,
       phoneNumber: catering.phoneNumber,
       numberOfPeople: catering.numberOfPeople,
-      date: moment(catering.date),
+      date: formattedDate,
       time: catering.time[0],
     });
     setEditModalVisible(true);
@@ -208,11 +209,21 @@ const AdminCatering = () => {
             name="numberOfPeople"
             label="Number of People"
             rules={[
-              { required: true, message: "Please enter number of people" },
+              {
+                required: true,
+                message: "Please enter the number of people",
+              },
+              {
+                type: "number",
+                min: 100,
+                max: 300,
+                message: "Number of people must be between 100 and 300",
+              },
             ]}
           >
             <Input type="number" />
           </Form.Item>
+
           <Form.Item
             name="date"
             label="Date"
