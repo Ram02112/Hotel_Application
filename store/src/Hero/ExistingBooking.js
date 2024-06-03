@@ -63,9 +63,10 @@ const ExistingBooking = () => {
   };
   const handleEditBooking = (booking) => {
     setCurrentBooking(booking);
+    const formattedDate = new Date(booking.date).toISOString().split("T")[0];
     form.setFieldsValue({
       name: booking.name,
-      date: moment(booking.date),
+      date: formattedDate,
       time: booking.time[0],
       numberOfPeople: booking.numberOfPeople,
     });

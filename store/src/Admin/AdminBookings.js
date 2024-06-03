@@ -173,9 +173,9 @@ const AdminBookings = () => {
               { required: true, message: "Please enter name of booking" },
               {
                 type: "number",
-                min: 1,
+                min: 20,
                 max: 6,
-                message: "Number of people must be between 1 and 6",
+                message: "Number of people must be between 6 and 20",
               },
             ]}
           >

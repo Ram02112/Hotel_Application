@@ -51,12 +51,13 @@ const ExistingCatering = () => {
   };
   const handleEditCatering = (catering) => {
     setCurrentCatering(catering);
+    const formattedDate = new Date(catering.date).toISOString().split("T")[0];
     form.setFieldsValue({
       cateringName: catering.cateringName,
       address: catering.address,
       phoneNumber: catering.phoneNumber,
       numberOfPeople: catering.numberOfPeople,
-      date: moment(catering.date),
+      date: formattedDate,
       time: catering.time[0],
     });
     setEditModalVisible(true);
